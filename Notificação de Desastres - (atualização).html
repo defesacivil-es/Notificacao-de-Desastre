@@ -1,0 +1,1261 @@
+<!-- FORMULÁRIO DE ATUALIZAÇÃO DE DESASTRES -->
+<!-- https://defesacivil-es.github.io/Atualizacao-de-Desastres/ -->
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Notificação de Desastres - (atualização)</title>
+
+  <style>
+    :root {
+      --cor-principal: #2B7A78;
+      --cor-secundaria: #DEF2F1;
+      --cor-clara: #FEFFFF;
+      --cor-escura: #17252A;
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background-color: var(--cor-secundaria);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: flex-start;
+    }
+
+    /* -- inserir no <style> já existente -- */
+    .logo {
+      width: 100%;            /* ocupa toda a largura possível */
+      /*max-width: 220px;       /* mas não passa de 220px */
+      height: auto;           /* mantém a proporção */
+      display: block;
+      margin: 0 auto 12px;    /* centraliza e dá espaço abaixo */
+    }
+
+    .logo-wrap {
+      text-align: center;
+      margin-bottom: 8px;  /* espaço entre imagem e título */
+    }
+
+    .loading {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .container {
+      background: var(--cor-clara);
+      border-radius: 12px;
+      padding: 25px 30px;
+      margin: 30px;
+      width: 100%;
+      max-width: 950px;
+      /* min-height: 1300px; /* ajuste conforme necessário */
+      height: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--cor-escura);
+      margin-bottom: 20px;
+    }
+
+    fieldset {
+      border: 2px solid var(--cor-principal);
+      border-radius: 8px;
+      margin-bottom: 18px;
+      padding: 15px 20px;
+    }
+
+    legend {
+      font-weight: bold;
+      color: var(--cor-principal);
+      padding: 0 8px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 7px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 4px;
+      box-sizing: border-box;
+    }
+
+    /* Chrome, Edge, Opera, Safari */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    button {
+      background-color: var(--cor-principal);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      /*width: 100%;*/
+      width: auto; /* <<< largura ajusta ao conteúdo */
+      display: inline-block; /* evita que ocupe 100% do espaço */
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #205f5d;
+    }
+
+    #buscarOcorrenciaBtn {
+      background-color: #6B8E23; /* verde oliva */
+      height: 42px;
+      margin-top: 23px;
+      box-sizing: border-box;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      width: auto; /* <<< largura ajusta ao conteúdo */
+      display: inline-block; /* evita que ocupe 100% do espaço */
+    }
+
+    #buscarOcorrenciaBtn:hover {
+      background-color: #4F6F1F; /* tom ligeiramente mais escuro no hover */
+    }
+
+
+    #saveToSheetButton {
+      background-color: #D2691E; /* laranja opaco */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      width: auto; /* <<< largura ajusta ao conteúdo */
+      display: inline-block; /* evita que ocupe 100% do espaço */
+    }
+
+    #saveToSheetButton:hover {
+      background-color: #B85C1A; /* tom ligeiramente mais escuro no hover */
+    }
+
+    #limpaToSheetButton {
+      background-color: #DC143C; /* vermelho */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      width: auto; /* <<< largura ajusta ao conteúdo */
+      display: inline-block; /* evita que ocupe 100% do espaço */
+    }
+
+    #limpaToSheetButton:hover {
+      background-color: #B22222; /* tom ligeiramente mais escuro no hover */
+    }
+
+    .full {
+      grid-column: 1 / -1; /* faz ocupar toda a linha */
+    }
+
+    .half {
+      grid-column: span 1;  /* ocupa metade */
+    }
+
+    .span-2 {
+      grid-column: span 2;
+      width: 100%;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 16px 20px;
+    }
+
+    .grid-4 label {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+   
+    .grid-4 :is(input, select) {
+      height: 42px;
+      box-sizing: border-box;
+    }
+
+    .grid-4 input,
+    .grid-4 select,
+    .grid-4 textarea {
+      line-height: 42px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px 20px;
+    }
+
+    .grid-3 label {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+   
+    .grid-3 :is(input, select) {
+      height: 42px;
+      box-sizing: border-box;
+    }
+
+    .grid-3 input,
+    .grid-3 select,
+    .grid-3 textarea {
+      line-height: 42px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 20px;
+      align-items: end;
+    }
+
+    .botoes-container {
+      display: flex;
+      justify-content: center; /* botões no centro */
+      align-items: center;
+      gap: 150px;          /* espaço entre os botões */
+      width: 100%; /* ocupa toda a largura disponível */
+      margin-top: 10px;
+    }
+
+    #tabelaDonativos {
+      width: 100%;  
+      max-width: 100%; 
+      box-sizing: border-box;
+      /* border-collapse: separate !important;  /* permite bordas arredondadas e força modo separado */
+      border-spacing: 0;          /* remove espaçamento entre células */
+      /*border: 2px solid #2B7A78;  /* azul petróleo */
+      /*border-radius: 14px;        /* arredonda o contorno da tabela */
+      overflow: hidden;           /* garante visual limpo */
+    }
+
+    #status {
+     text-align: center;
+     margin-top: 15px;
+     font-weight: bold;
+     font-size: 15px;
+    }
+
+    .quantidade-container {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+    }
+
+    .unidade-label {
+     font-weight: bold;
+     color: var(--cor-escura);
+     white-space: nowrap;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      /*border: 1px solid #ccc;*/
+      border: 1px solid #2B7A78;
+      padding: 6px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    th {
+      background-color: #87CEEB; /* azul céu */
+      /*border: 2px solid #2B7A78; /* borda azul petróleo */
+      /*border-radius: 8px;        /* arredonda o contorno da tabela */
+      color: white;              /* mantém o texto branco para contraste */
+    }
+
+    .btnExcluir {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .btnExcluir:hover {
+      background-color: #922b21;
+    }
+
+    /* Reduz exatamente a altura do campo */
+    .choices {
+      width: 100% !important;       /* ocupa apenas a largura da coluna */
+      max-width: 100% !important;   /* impede que estoure para fora */
+      box-sizing: border-box !important;
+      margin-top: 4px !important;
+    }
+
+    /* Ajusta a caixa interna para a mesma altura dos outros inputs */
+    .choices__inner {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      border: 1px solid #ccc !important;
+      border-radius: 6px !important;
+      padding: 2px 7px !important;
+      min-height: 44px !important;   /* <<< ajuste principal */
+      height: auto !important;       /* <<< força a altura */
+      display: flex;
+      /* align-items: center;           /* centraliza o texto */
+      align-items: flex-start !important;
+      flex-wrap: wrap;
+    }
+
+    /* Ajusta o texto interno para não aumentar a altura */
+    .choices__inner .choices__item {
+      padding: 0 !important;
+      margin: 0 !important;
+      font-size: 14px !important;
+      line-height: 1.2 !important;   /* <<< evita expansão vertical */
+    }
+
+    /* Remove espaço extra no modo single */
+    .choices__list--single {
+      padding: 0 !important;
+    }
+
+    /* Dropdown com altura normal */
+    .choices__list--dropdown {
+      border-radius: 6px !important;
+      border: 1px solid #ccc !important;
+      margin-top: 2px !important;
+    }
+
+    @media (min-width: 700px) {
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px 20px;
+      }
+    }
+
+    @media print {
+      /* Ocultar botões */
+      button, .sem-imprimir {
+      display: none !important;
+      }
+
+      /* Ajustar largura da página */
+      body {
+        margin: 20px;
+        font-size: 14px;
+      }
+    }
+
+    @media print {
+      .no-print {
+      display: none !important;
+      }
+
+      /* Opcional — esconder também todos os botões */
+      /*button { */
+      /*display: none !important;*/
+      /*}*/
+    }    
+
+    /* === CONTAINER PRINCIPAL === */
+    .choices, #itensSelect, #itensSelect + .choices {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow: visible !important;
+    }
+
+    /* Área interna ajustável */
+    .choices__inner {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      padding: 8px !important;
+      min-height: 44px !important;
+      height: auto !important;
+    }
+
+    /* === GRID DAS TAGS (4 POR LINHA) === */
+    .choices__list--multiple {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 8px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Aparência das tags */
+    .choices__list--multiple .choices__item {
+      width: 100% !important;
+      text-align: center !important;
+      margin: 0 !important;
+      padding: 4px 8px !important;
+      font-size: 13px !important;
+      border-radius: 6px !important;
+      box-sizing: border-box !important;
+    }
+
+    /* === CENTRALIZAÇÃO DO PLACEHOLDER REAL === */
+    .choices[data-type*="select-multiple"] 
+    .choices__list--single 
+    .choices__placeholder {
+      width: 100% !important;
+      text-align: center !important;
+      display: block !important;
+      margin: 0 auto !important;
+    }
+
+    /* Cor de fundo dos campos desabilitados */
+    input:disabled,
+    select:disabled,
+    textarea:disabled {
+      background-color: #e0e0e0; /* cinza mais escuro */
+      color: #555;              /* texto mais apagado */
+      cursor: not-allowed;      /* cursor de campo bloqueado */
+    }
+   
+    #numeroOcorrenciaSelect {
+      background-color: #d4f5d4;
+      font-weight: bold;
+      color: #000;
+    }
+
+    input:read-only,
+    textarea:read-only,
+    select:disabled {
+      background-color: #f0f0f0; /* cinza claro */
+      color: #555;               /* texto levemente mais escuro */
+      cursor: not-allowed;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="logo-wrap">
+      <img src="Logo_CEPDEC.PNG" alt="Logo da CEPDEC" class="logo">
+    </div>
+
+    <h2>Atualização de Dados de Ocorrências e Desastres</h2>
+
+    <form id="formOcorrencia">
+
+      <fieldset>
+        <legend>1. Identificação da Ocorrência</legend>
+        <div class="grid-3">
+          <label title= "Escolha uma ocorrência já cadastrada para atualizá-la" class = "span-2">Número da Ocorrência
+            <select id="numeroOcorrenciaSelect" name="numeroOcorrencia" required>
+              <option value="" disabled selected>Carregando...</option>     
+            </select>
+          </label>
+
+          <label><button class="botoes-container" type="button" id="buscarOcorrenciaBtn" >Buscar dados da Ocorrência</button></label>
+
+          <label>Tipo de Ocorrência <input type="text" name="tipoOcorrencia" readonly ></label>
+          <label>Data da Ocorrência <input id= "dataOcorrencia" type="date" name="dataOcorrencia" readonly ></label>
+          <label>Horário da Ocorrência <input id="horarioOcorrencia" type="time" name="horarioOcorrencia" readonly ></label>
+        </div>
+      </fieldset>
+      
+      <fieldset>
+        <legend>2. Identificação do Comunicante</legend>
+        <div class="grid-3">
+          <label class="span-2">REPDEC - Responsável
+            <select id="repdecSelect" name="repdec" required>
+              <option value="" disabled selected>Carregando...</option>     
+            </select>
+          </label>
+          <label>Instituição Comunicante
+            <select id="instituicaoSelect" name="instituicaoComunicante" required>
+              <option value="" disabled selected>Carregando...</option>     
+            </select>
+          </label>
+          <label>Nome do Comunicante <input type="text" id="nomeComunicante" name="nomeComunicante" style="text-transform: uppercase;" required></label>
+          <label>Telefone do Comunicante <input id="telefoneComunicante" name="telefoneComunicante" type="text" required maxlength="13" inputmode="numeric" placeholder="00 00000-0000"></label>
+          <label>E-mail do Comunicante <input type="email" id="emailComunicante" name="emailComunicante" required></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Localização da Ocorrência</legend>
+        <div class="grid-3">
+          <label>Município <input type="text" name="municipioOcorrencia" readonly ></label>
+          <label>Bairro <input type="text" name="bairro" readonly ></label>
+          <label>Rua <input type="text" name="rua" readonly ></label>
+          <label>Número <input type="number" name="numero" readonly ></label>
+          <label>Complemento <input type="text" name="complemento" readonly ></label>
+          <label>Ponto de Referência <input type="text" name="pontoReferencia" readonly ></label>
+          <label title= "Digite apenas os números">Latitude - (Ex: -20,985815) <input id="latitude" type="text" name="latitude" maxlength="10" inputmode="numeric" placeholder="-00,000000" readonly ></label>
+          <label title= "Digite apenas os números">Longitude - (Ex: -40,985815) <input id="longitude" type="text" name="longitude" maxlength="10" inputmode="numeric" placeholder="-00,000000" readonly ></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Descrição da Ocorrência</legend>
+        <div class="grid-3">
+
+          <label>Natureza do Desastre <input type="text" name="naturezaDesastre" readonly ></label>
+
+          <label class = "span-2">COBRADE <input type="text" name="cobrade" readonly ></label>
+
+          <label class = "span-2">Rio ou Córrego Próximo <input type="text" name="rioCorregro" readonly ></label>
+          <label  title="Informe a cota máxima de inundação atingida nas casas (em metros)!">Cota Máxima de Inundação (mts) <input type="number" id="cotaMaxima" name="cotaMaxima" inputmode="decimal" step="0.01"></label>
+          <label class = "full">Relato de Estrutura Colapsada <textarea name="relatoEstruturaColapsada" readonly ></textarea></label>
+          <label class = "full">Relato Detalhado da Ocorrência <textarea name="relatoDetalhadoOcorrencia" readonly ></textarea></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Informe Novos Danos e Prejuízos Humanos</legend>
+        <div class="grid-3">
+          <label>Desalojados <input type="number" id="desalojados" name="desalojados" min="0"></label>
+          <label>Desabrigados <input type="number" id="desabrigados" name="desabrigados" min="0"></label>
+          <label>Feridos <input type="number" id="feridos" name="feridos" min="0"></label>
+          <label>Enfermos <input type="number" id="enfermos" name="enfermos" min="0"></label>
+          <label>Desaparecidos <input type="number" id="desaparecidos" name="desaparecidos" min="0"></label>
+          <label>Óbitos <input type="number" id="obitos" name="obitos" min="0"></label>
+          <label>Outras Pessoas Afetadas <input type="number" id="outrasAfetadas" name="outrasAfetadas" min="0"></label>
+          <label>Pessoas Encaminhadas para Abrigo <input type="number" id="pessoasAbrigo" name="pessoasAbrigo" min="0"></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>6. Informe Novos Danos e Prejuízos Materiais</legend>
+        <div class="grid-3">
+          <label>Unidades Habitacionais Afetadas <input type="number" id="unidHabitAfetadas" name="unidHabitAfetadas" min="0"></label>
+          <label>Instalações Particulares Afetadas <input type="number" id="instPartAfetadas" name="instPartAfetadas" min="0"></label>
+          <label>Instalações Públicas Afetadas <input type="number" id="instPublAfetadas" name="instPublAfetadas" min="0"></label>
+          <label>Vias interditadas <input type="number" id="viasInterditadas" name="viasInterditadas" min="0"></label>
+          <label>Infraestruturas Públicas Afetadas <input type="number" id="infraPublAfetadas" name="infraPublAfetadas" min="0"></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>7. Conferência e Atualização dos Dados de Participação Institucional e Ações Adotadas </legend>
+        <div class="grid-3">
+          <label class="full">Relação de Recursos Empenhados no Desastre
+            <select id="recursosSelect" name="recursosEmpenhados" multiple>
+              <option value="" disabled selected>Carregando...</option>     
+            </select>
+          </label>
+          <label class="full">Participação Institucional
+            <select id="participacaoSelect" name="participacaoInstitucional" multiple>
+              <option value="" disabled selected>Carregando...</option>     
+            </select>
+          </label>
+          <label>Total de Servidores Voluntários Atuando pelo Município <input type="number" name="servidoresVoluntarios" min="0"></label>
+          <label>Ativado SCO com a instalação de um PC Local no Município?
+            <select name="ativacaoSCO" required>
+              <option value=""></option>
+              <option>Sim</option>
+              <option>Não</option>
+            </select>
+          </label>
+          <label title="Informe se o município emitiu ou emitirá decreto de situação de anormalidade!">O Município Emitiu ou Emitirá Decreto de Situação de Anormalidade?
+            <select name="emissaoDecreto" required>
+              <option value=""></option>
+              <option>Sim</option>
+              <option>Não</option>
+            </select>
+          </label>
+          <label title="Informe se o município necessita de apoio para o restabelecimento de serviços essenciais!">O Município Necessita de Apoio?
+            <select name="necessitaApoio" required>
+              <option value=""></option>
+              <option>Sim</option>
+              <option>Não</option>
+            </select>
+          </label>
+          <label title="Informe se o município solicitou ou solicitará Itens de Assistência Humanitária da CEPDEC!">Solicitação de IAH à CEPDEC?
+            <select name="solicitaIAH" required>
+              <option value=""></option>
+              <option>Sim</option>
+              <option>Não</option>
+            </select>
+          </label>
+          <label title="Informe se o foi Instalado Posto de Comando!">Houve Instalação de Posto Comando?
+            <select name="postoComando" required>
+              <option value=""></option>
+              <option>Sim</option>
+              <option>Não</option>
+            </select>
+          </label>
+          <label title="Informe se o foi Instalado Abrigo!">Houve Instalação de Abrigo?
+            <select name="instalacaoAbrigo" required>
+              <option value=""></option>
+              <option>Sim</option>
+              <option>Não</option>
+            </select>
+          </label>
+          <label title="Informe se o foi Instalado Centro de Logística Humanitária!">Houve Instalação de Centro Logística?
+            <select name="centroLogistica" required>
+              <option value=""></option>
+              <option>Sim</option>
+              <option>Não</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>8. Finalização</legend>
+        <div class="form-grid">
+          <label title="Selecione as fotos segurando a tecla <CTRL> // Tamanho máximo por foto: 1Mb // Tamanho máximo por envio: 20 Mb">Inclua Novas Fotos <input id="fotosInput" type="file" name="fotos" accept="image/*" multiple></label>
+
+          <!-- Lista visível dos arquivos escolhidos -->
+          <div class="full">
+            <ul id="listaFotos" style="margin-top: 5px; padding-left: 20px;"></ul>
+          </div>
+
+          <label class="full">Outras Informações <textarea id="outrasInformacoes" name="outrasInformacoes" ></textarea></label>
+          <label class="full">Sugestões <textarea id="sugestoes" name="sugestoes" ></textarea></label>
+        </div>
+      </fieldset>
+
+      <div class="botoes-container">
+        <button type="button" id="saveToSheetButton" >Registrar Ocorrência</button>
+        <button type="button" id="limpaToSheetButton" onclick="limparFormulario()" >Limpar Formulário</button>
+      </div>
+
+      <div id="status" class="message"></div>
+
+    </form>
+
+  </div>
+
+
+<script>
+
+  const appScriptUrl = 'https://script.google.com/macros/s/AKfycbxHigz7wA4aLOZ8QMkv2MEzQ9l-ZS8zEpHy427bwyMmrpI8zwjRSNGesa19m157HCMY/exec';
+  let lookupData = {};
+  let abortBuscaOcorrencia = null;
+  let statusTimeout = null;
+
+  const form = document.getElementById('formOcorrencia');
+  const saveBtn = document.getElementById('saveToSheetButton');
+  const statusArea = document.getElementById('status');
+  
+  const buscarBtn = document.getElementById('buscarOcorrenciaBtn');
+  const numeroSelect = document.getElementById('numeroOcorrenciaSelect');
+
+  // Variáveis globais para as instâncias do Choices.js
+  let recursosChoices = null;
+  let participacaoChoices = null;
+
+  const telInput = document.getElementById('telefoneComunicante');
+  telInput.addEventListener('input', function () {
+    // Remove tudo que não for número
+    let valor = this.value.replace(/\D/g, '');
+
+    // Limita a 11 dígitos
+    valor = valor.substring(0, 11);
+
+    // Aplica a máscara
+    if (valor.length > 10) {
+      // Formato celular: 00 00000-0000
+      valor = valor.replace(/(\d{2})(\d{5})(\d{1,4})/, "$1 $2-$3");
+    } else if (valor.length > 9) {
+      // Início do formato fixo: 00 0000-0000
+      valor = valor.replace(/(\d{2})(\d{4})(\d{1,4})/, "$1 $2-$3");
+    }
+    this.value = valor;
+  });
+
+
+  const latitudeInput = document.getElementById('latitude');
+  latitudeInput.addEventListener('input', function () {
+
+    // Remove tudo que não for número
+    let valor = this.value.replace(/\D/g, '');
+
+    // Limita a exatamente 8 dígitos
+    valor = valor.substring(0, 8);
+
+    // Aplica a máscara quando houver ao menos 1 dígito
+    if (valor.length >= 1) {
+      valor = valor.replace(/^(\d{0,2})(\d{0,6})$/, function (_, int, dec) {
+        if (dec) return `-${int},${dec}`;
+        return `-${int}`;
+      });
+    }
+    this.value = valor;
+  });
+
+
+  const longitudeInput = document.getElementById('longitude');
+  longitudeInput.addEventListener('input', function () {
+
+    // Remove tudo que não for número
+    let valor = this.value.replace(/\D/g, '');
+
+    // Limita a exatamente 8 dígitos
+    valor = valor.substring(0, 8);
+
+    // Aplica a máscara quando houver ao menos 1 dígito
+    if (valor.length >= 1) {
+      valor = valor.replace(/^(\d{0,2})(\d{0,6})$/, function (_, int, dec) {
+        if (dec) return `-${int},${dec}`;
+        return `-${int}`;
+      });
+    }
+    this.value = valor;
+  });
+
+  // Mostra a lista de arquivos selecionados no campo Fotos
+  document.getElementById('fotosInput').addEventListener('change', function () {
+    const lista = document.getElementById('listaFotos');
+    lista.innerHTML = ""; // limpa antes
+
+    for (const file of this.files) {
+      const li = document.createElement("li");
+      li.textContent = file.name;
+      lista.appendChild(li);
+    }
+  });
+
+  // Função para popular selects normais
+  function populateSelect(selectElement, items) {
+    selectElement.innerHTML = '<option value="" disabled selected>Selecione...</option>';
+
+    items.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item;
+      option.textContent = item;
+      selectElement.appendChild(option);
+    });
+  }
+
+  // Função para popular selects com Choices.js
+  function populateSelectChoices(choicesInstance, items) {
+    const list = items.map(i => ({ value: i, label: i }));
+    choicesInstance.clearStore();
+    choicesInstance.setChoices(list, 'value', 'label', true);
+  }
+  
+  async function fetchLookupData() {
+    const lookupUrl = `${appScriptUrl}?action=lookup`;
+    mostrarStatus("Carregando dados de apoio...", 0);
+
+    try {
+      const res = await fetch(lookupUrl);
+      const json = await res.json();
+      const data = json.data || json;
+
+      lookupData = data;
+
+      // Popula selects normais
+      //if (document.getElementById('municipioOcorrenciaSelect'))
+      //  populateSelect(document.getElementById('municipioOcorrenciaSelect'), lookupData.municipio || []);
+
+      if (document.getElementById('numeroOcorrenciaSelect'))
+        populateSelect(document.getElementById('numeroOcorrenciaSelect'), lookupData.numeroOcorrencia || []);
+
+      if (document.getElementById('repdecSelect'))
+        populateSelect(document.getElementById('repdecSelect'), lookupData.repdec || []);
+
+      //if (document.getElementById('tipoOcorrenciaSelect'))
+      //  populateSelect(document.getElementById('tipoOcorrenciaSelect'), lookupData.tipoOcorrencia || []);
+
+      if (document.getElementById('instituicaoSelect'))
+        populateSelect(document.getElementById('instituicaoSelect'), lookupData.instituicaoComunicante || []);
+
+      //if (document.getElementById('naturezaDesastreSelect'))
+      //  populateSelect(document.getElementById('naturezaDesastreSelect'), lookupData.naturezaDesastre || []);
+
+      //if (document.getElementById('cobradeSelect'))
+      //  populateSelect(document.getElementById('cobradeSelect'), lookupData.cobrade || []);
+
+      // Inicializa Choices.js para selects múltiplos e preenche-os
+      if (document.getElementById('recursosSelect') && !recursosChoices) {
+        recursosChoices = new Choices('#recursosSelect', {
+          removeItemButton: true,
+          searchPlaceholderValue: "Buscar recurso...",
+          placeholderValue: "Selecione...",
+          noResultsText: "Nenhum recurso encontrado",
+          itemSelectText: "",
+        });
+        // ⭐ FECHAR DROPDOWN APÓS CADA SELEÇÃO
+        document.querySelector('#recursosSelect').addEventListener('change', () => {
+          recursosChoices.hideDropdown();
+        });
+        // ⭐ MOSTRAR DROPDOWN AO CLICAR NO CAMPO
+        const container = document.querySelector('#recursosSelect').closest('.choices');
+        container.addEventListener('click', () => {
+          recursosChoices.showDropdown();
+        });
+        populateSelectChoices(recursosChoices, lookupData.recursosEmpenhados || []);
+      }
+
+      if (document.getElementById('participacaoSelect') && !participacaoChoices) {
+        participacaoChoices = new Choices('#participacaoSelect', {
+          removeItemButton: true,
+          searchPlaceholderValue: "Buscar instituição...",
+          placeholderValue: "Selecione...",
+          noResultsText: "Nenhuma instituição encontrada",
+          itemSelectText: "",
+        });
+        // ⭐ FECHAR DROPDOWN APÓS CADA SELEÇÃO
+        document.querySelector('#participacaoSelect').addEventListener('change', () => {
+          participacaoChoices.hideDropdown();
+        });
+        // ⭐ MOSTRAR DROPDOWN AO CLICAR NO CAMPO
+        const container = document.querySelector('#participacaoSelect').closest('.choices');
+        container.addEventListener('click', () => {
+          participacaoChoices.showDropdown();
+        });
+        populateSelectChoices(participacaoChoices, lookupData.participacaoInstitucional || []);
+      }
+
+      mostrarStatus("✅ Dados carregados com sucesso!", 3000);
+
+    } catch (e) {
+      console.error("Falha ao carregar dados de lookup:", e);
+      mostrarStatus("❌ Erro ao carregar dados de apoio.", 3000);
+    }
+
+  } // Fim de fetchLookupData()
+
+
+  // Adiciona cada imagem Base64
+  const LIMITE_POR_IMAGEM_MB = 2;   // 2 MB por imagem
+  const LIMITE_TOTAL_MB = 10;      // 10 MB no total
+  async function filesToBase64(files) {
+    let totalSize = 0;
+    const resultados = [];
+
+    for (const file of files) {
+      const sizeMB = file.size / (1024 * 1024);
+      if (sizeMB > LIMITE_POR_IMAGEM_MB) {
+        throw new Error(`A imagem "${file.name}" excede ${LIMITE_POR_IMAGEM_MB} MB`);
+      }
+      totalSize += sizeMB;
+    }
+
+    if (totalSize > LIMITE_TOTAL_MB) {
+      throw new Error(`Tamanho total das imagens excede ${LIMITE_TOTAL_MB} MB`);
+    }
+
+    let concluido = 0;
+
+    for (const file of files) {
+      const base64 = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.readAsDataURL(file);
+      });
+
+      resultados.push({
+        name: file.name,
+        type: file.type,
+        data: base64
+      });
+
+    }
+
+    return resultados;
+  }
+
+
+  saveBtn.addEventListener('click', async () => {
+
+    // 🔸 Validação automática dos campos required
+    if (!form.checkValidity()) {
+      form.reportValidity(); // mostra os erros na tela
+      return; // interrompe o envio
+    }
+
+    
+    mostrarStatus("Enviando Dados da Ocorrência...", 0);
+    saveBtn.disabled = true;
+
+    try {
+
+      const formData = new FormData(form);
+
+
+      const fotosInput = document.getElementById('fotosInput');
+
+      let fotosBase64 = [];
+
+      if (fotosInput.files.length > 0) {
+        fotosBase64 = await filesToBase64(fotosInput.files);
+      }
+
+      formData.append('fotosBase64', JSON.stringify(fotosBase64));
+
+
+      // força nome em maiúsculas
+      formData.set('nomeComunicante',
+        formData.get('nomeComunicante').toUpperCase()
+      );
+
+      // ⭐ ALTERADO — capturar selecionados do Choices
+      const recursosSelecionados = recursosChoices.getValue(true); 
+      const participacaoSelecionados = participacaoChoices.getValue(true); 
+
+      // salvar como string separada por vírgula
+      formData.set('recursosEmpenhados', recursosSelecionados.join(", "));
+      formData.set('participacaoInstitucional', participacaoSelecionados.join(", "));
+
+      // 🔸 Envio de Dados para o Apps Script que precisa identificar a ação:
+      formData.append('action', 'saveOne');
+
+      const response = await fetch(appScriptUrl, {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (result.status === 'SUCCESS') {
+        
+        mostrarStatus("✅ Registro salvo!", 2000);
+      } else {
+        mostrarStatus("⚠️ Erro: " + result.message, 7000);
+      }
+
+    } catch (err) {
+      mostrarStatus("❌ Falha: " + err.message);
+    }
+
+
+    finally {
+
+      saveBtn.disabled = false;
+
+      setTimeout(() => {
+        progress.style.display = "none";
+        progress.value = 0;
+        text.textContent = "";
+      }, 2000);
+
+    }
+
+    form.reset();
+
+    // ⭐ ADICIONADO — limpar visual do Choices também
+    if (recursosChoices) recursosChoices.removeActiveItems();
+    if (participacaoChoices) participacaoChoices.removeActiveItems();
+    document.getElementById('listaFotos').innerHTML = "";
+    document.getElementById('fotosInput').value = ""; // Também limpa o input de arquivo
+
+    //Volta os selects normais para a opção "Selecione..."
+    const selects = form.querySelectorAll('select');
+    selects.forEach(select => {
+        if (!select.hasAttribute('multiple')) {
+           select.value = "";
+        }
+    });
+
+  });
+
+
+  numeroSelect.addEventListener('change', () => {
+    const numeroSelecionado = numeroSelect.value;
+
+    // Limpa qualquer status anterior
+    mostrarStatus('', 0);
+
+    // Cancela busca em andamento, se existir
+    if (abortBuscaOcorrencia) {
+      abortBuscaOcorrencia.abort();
+      abortBuscaOcorrencia = null;
+    }
+
+    // Limpa formulário
+    limparFormulario();
+
+    // Garante que o número continue selecionado
+    numeroSelect.value = numeroSelecionado;
+  });
+
+
+  function limparFormulario() {
+    const form = document.querySelector('form');
+    if (form) {
+        form.reset(); // Limpa a maioria dos campos nativos
+
+        // 🎯 Correção/Melhoria: Limpar a lista visual de fotos
+        document.getElementById('listaFotos').innerHTML = "";
+        document.getElementById('fotosInput').value = ""; // Também limpa o input de arquivo
+
+        // Limpa visualmente os campos do Choices.js
+        if (recursosChoices) recursosChoices.removeActiveItems();
+        if (participacaoChoices) participacaoChoices.removeActiveItems();
+
+        // Volta os selects normais para a opção "Selecione..."
+        const selects = form.querySelectorAll('select');
+        selects.forEach(select => {
+            if (!select.hasAttribute('multiple')) {
+                select.value = "";
+            }
+        });
+    }
+
+  }
+
+
+  // numeroSelect.addEventListener('keydown', (e) => {
+  //   if (e.key === 'Enter') {
+  //     buscarBtn.click();
+  //   }
+  // });
+
+ 
+  buscarBtn.addEventListener('click', async () => {
+    const numero = numeroSelect.value;
+
+    if (!numero) {
+      mostrarStatus("⚠️ Selecione um número de ocorrência", 3000);
+      return;
+    }
+
+    // Cancela busca anterior
+    if (abortBuscaOcorrencia) {
+      abortBuscaOcorrencia.abort();
+    }
+
+    abortBuscaOcorrencia = new AbortController();
+    const { signal } = abortBuscaOcorrencia;
+
+    mostrarStatus("🔎 Buscando ocorrência...", 0);
+    buscarBtn.disabled = true;
+    form.classList.add('loading');
+
+    try {
+      const res = await fetch(
+        `${appScriptUrl}?action=getByNumero&numeroOcorrencia=${encodeURIComponent(numero)}`,
+        { signal }
+      );
+
+      const json = await res.json();
+
+      if (json.status !== 'SUCCESS') {
+        mostrarStatus("⚠️ " + json.message, 5000);
+        return;
+      }
+
+      preencherFormulario(json.data);
+      mostrarStatus("✅ Ocorrência carregada", 3000);
+
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error(err);
+        mostrarStatus("❌ Erro ao buscar ocorrência", 5000);
+      }
+    } finally {
+      buscarBtn.disabled = false;
+      form.classList.remove('loading');
+    }
+  });
+
+  function preencherFormulario(dados) {
+    Object.keys(dados).forEach(name => {
+      const field = form.querySelector(`[name="${name}"]`);
+      if (!field) return;
+
+      // SELECT múltiplo com Choices
+      if (field.multiple && (name === 'recursosEmpenhados' || name === 'participacaoInstitucional')) {
+        const valores = String(dados[name]).split(',').map(v => v.trim());
+
+        if (name === 'recursosEmpenhados' && recursosChoices) {
+          recursosChoices.removeActiveItems();
+          recursosChoices.setChoiceByValue(valores);
+        }
+
+        if (name === 'participacaoInstitucional' && participacaoChoices) {
+          participacaoChoices.removeActiveItems();
+          participacaoChoices.setChoiceByValue(valores);
+        }
+        return;
+      }
+
+      // SELECT normal
+      if (field.tagName === 'SELECT') {
+        field.value = dados[name];
+        field.dispatchEvent(new Event('change'));
+        return;
+      }
+
+      // INPUT / TEXTAREA
+      field.value = dados[name] ?? '';
+
+    });
+
+    document.getElementById('dataOcorrencia').value =
+      formatarDataParaInput(dados.dataOcorrencia);
+
+    document.getElementById('horarioOcorrencia').value =
+      formatarHoraParaInput(dados.horarioOcorrencia);
+
+
+    document.getElementById('latitude').value = formatarLatitudeLongitude(dados.latitude);
+    document.getElementById('longitude').value = formatarLatitudeLongitude(dados.longitude);
+
+    document.getElementById('repdecSelect').value = "";
+    document.getElementById('instituicaoSelect').value = "";
+    document.getElementById('nomeComunicante').value = "";
+    document.getElementById('telefoneComunicante').value = "";
+    document.getElementById('emailComunicante').value = "";
+    document.getElementById('cotaMaxima').value = "" ;
+    document.getElementById('desalojados').value = "";
+    document.getElementById('desabrigados').value = "";
+    document.getElementById('feridos').value = "";
+    document.getElementById('enfermos').value = "";
+    document.getElementById('desaparecidos').value = "";
+    document.getElementById('obitos').value = "";   
+    document.getElementById('outrasAfetadas').value = "";
+    document.getElementById('pessoasAbrigo').value = "";
+    document.getElementById('unidHabitAfetadas').value = "";
+    document.getElementById('instPartAfetadas').value = "";
+    document.getElementById('instPublAfetadas').value = "";
+    document.getElementById('viasInterditadas').value = "";    
+    document.getElementById('infraPublAfetadas').value = "";   
+    document.getElementById('outrasInformacoes').value = "";    
+    document.getElementById('sugestoes').value = "";     
+
+  }
+
+
+  function formatarLatitudeLongitude(numerotexto) {
+
+    if (!numerotexto) return '';
+
+    // Remove tudo que não for número
+    let valor = String(numerotexto).replace(/\D/g, '');
+
+    // Limita a exatamente 8 dígitos
+    valor = valor.substring(0, 8);
+
+    // Aplica a máscara quando houver ao menos 1 dígito
+    if (valor.length >= 1) {
+      valor = valor.replace(/^(\d{0,2})(\d{0,6})$/, function (_, int, dec) {
+        if (dec) return `-${int},${dec}`;
+        return `-${int}`;
+      });
+    }
+
+    return valor; 
+
+  }
+
+
+  function formatarDataParaInput(dataTexto) {
+    if (!dataTexto) return '';
+
+    // Esperado: DD/MM/YYYY
+
+    if (dataTexto.includes('-')) {
+      return dataTexto.substring(0, 10);
+    }
+
+    const [dia, mes, ano] = dataTexto.split('/');
+    return `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+  }
+
+  function formatarHoraParaInput(hora) {
+    if (!hora) return '';
+
+    // 🔹 Se já for Date
+    if (hora instanceof Date) {
+      const h = String(hora.getHours()).padStart(2, '0');
+      const m = String(hora.getMinutes()).padStart(2, '0');
+      return `${h}:${m}`;
+    }
+
+    // 🔹 Se vier como número (ex: 930 ou 1430)
+    if (typeof hora === 'number') {
+      const str = hora.toString().padStart(4, '0');
+      return `${str.substring(0, 2)}:${str.substring(2, 4)}`;
+    }
+
+    // 🔹 Converte tudo para string
+    hora = hora.toString().trim();
+
+    // 🔹 ISO datetime (ex: 2026-01-05T14:30:00.000Z)
+    if (hora.includes('T')) {
+      const data = new Date(hora);
+      if (!isNaN(data)) {
+        const h = String(data.getHours()).padStart(2, '0');
+        const m = String(data.getMinutes()).padStart(2, '0');
+        return `${h}:${m}`;
+      }
+    }
+
+    // 🔹 Remove tudo que não for número
+    const numeros = hora.replace(/\D/g, '');
+
+    if (numeros.length >= 3) {
+      const h = numeros.slice(0, numeros.length - 2).padStart(2, '0');
+      const m = numeros.slice(-2);
+      return `${h}:${m}`;
+    }
+
+    if (numeros.length === 2) {
+      return `${numeros}:00`;
+    }
+
+    return '';
+  }
+
+  function mostrarStatus(mensagem, tempo = 3000) {
+    // ⛔ Cancela timeout anterior
+    if (statusTimeout) {
+      clearTimeout(statusTimeout);
+      statusTimeout = null;
+    }
+
+    statusArea.textContent = mensagem;
+
+    if (tempo > 0) {
+      statusTimeout = setTimeout(() => {
+        statusArea.textContent = '';
+        statusTimeout = null;
+      }, tempo);
+    }
+  }
+
+  // Executa o carregamento dos dados quando o documento estiver pronto
+  document.addEventListener("DOMContentLoaded", fetchLookupData);
+
+</script>
+
+</body>
+
+</html>

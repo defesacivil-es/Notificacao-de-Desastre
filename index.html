@@ -1,0 +1,454 @@
+<!-- FORMULÁRIO DE CADASTRO DE VOLUNTÁRIOS -->
+<!-- https://defesacivil-es.github.io/Cadastro-de-Voluntarios/ -->
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Notificação de Desastres - (Index)</title>
+
+  <style>
+    :root {
+      --cor-principal: #2B7A78;
+      --cor-secundaria: #DEF2F1;
+      --cor-clara: #FEFFFF;
+      --cor-escura: #17252A;
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background-color: var(--cor-secundaria);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: flex-start;
+    }
+
+    /* -- inserir no <style> já existente -- */
+    .logo {
+      width: 100%;            /* ocupa toda a largura possível */
+      /*max-width: 220px;       /* mas não passa de 220px */
+      height: auto;           /* mantém a proporção */
+      display: block;
+      margin: 0 auto 12px;    /* centraliza e dá espaço abaixo */
+    }
+    .logo-wrap {
+      text-align: center;
+      margin-bottom: 8px;  /* espaço entre imagem e título */
+    }
+
+    .container {
+      background: var(--cor-clara);
+      border-radius: 12px;
+      padding: 25px 30px;
+      margin: 30px;
+      width: 100%;
+      max-width: 950px;
+      /* min-height: 1300px; /* ajuste conforme necessário */
+      height: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--cor-escura);
+      margin-bottom: 20px;
+    }
+
+    fieldset {
+      border: 2px solid var(--cor-principal);
+      border-radius: 8px;
+      margin-bottom: 18px;
+      padding: 15px 20px;
+    }
+
+    legend {
+      font-weight: bold;
+      color: var(--cor-principal);
+      padding: 0 8px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 7px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 4px;
+      box-sizing: border-box;
+    }
+
+    /* Chrome, Edge, Opera, Safari */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    button {
+      background-color: var(--cor-principal);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      /*width: 100%;*/
+      width: auto; /* <<< largura ajusta ao conteúdo */
+      display: inline-block; /* evita que ocupe 100% do espaço */
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #205f5d;
+    }
+
+    #botaoCadastrar {
+      background-color: #D2691E; /* laranja opaco */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      width: auto; /* <<< largura ajusta ao conteúdo */
+      display: inline-block; /* evita que ocupe 100% do espaço */
+    }
+
+    #botaoCadastrar:hover {
+      background-color: #B85C1A; /* tom ligeiramente mais escuro no hover */
+    }
+
+    #botaoAtualizar {
+      background-color: #DC143C; /* vermelho */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      width: auto; /* <<< largura ajusta ao conteúdo */
+      display: inline-block; /* evita que ocupe 100% do espaço */
+    }
+
+    #botaoAtualizar:hover {
+      background-color: #B22222; /* tom ligeiramente mais escuro no hover */
+    }
+
+    .full {
+      grid-column: 1 / -1; /* faz ocupar toda a linha */
+    }
+
+    .half {
+      grid-column: span 1;  /* ocupa metade */
+    }
+
+    .span-2 {
+      grid-column: span 2;
+      width: 100%;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 16px 20px;
+    }
+
+    .grid-4 label {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+   
+    .grid-4 :is(input, select) {
+      height: 42px;
+      box-sizing: border-box;
+    }
+
+    .grid-4 input,
+    .grid-4 select,
+    .grid-4 textarea {
+      line-height: 42px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 20px;
+    }
+
+    .botoes-container {
+      display: flex;
+      justify-content: center; /* botões no centro */
+      align-items: center;
+      gap: 150px;          /* espaço entre os botões */
+      width: 100%; /* ocupa toda a largura disponível */
+      margin-top: 10px;
+    }
+
+    #tabelaDonativos {
+      width: 100%;  
+      max-width: 100%; 
+      box-sizing: border-box;
+      /* border-collapse: separate !important;  /* permite bordas arredondadas e força modo separado */
+      border-spacing: 0;          /* remove espaçamento entre células */
+      /*border: 2px solid #2B7A78;  /* azul petróleo */
+      /*border-radius: 14px;        /* arredonda o contorno da tabela */
+      overflow: hidden;           /* garante visual limpo */
+    }
+
+    #status {
+     text-align: center;
+     margin-top: 15px;
+     font-weight: bold;
+     font-size: 15px;
+    }
+
+    .quantidade-container {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+    }
+
+    .unidade-label {
+     font-weight: bold;
+     color: var(--cor-escura);
+     white-space: nowrap;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      /*border: 1px solid #ccc;*/
+      border: 1px solid #2B7A78;
+      padding: 6px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    th {
+      background-color: #87CEEB; /* azul céu */
+      /*border: 2px solid #2B7A78; /* borda azul petróleo */
+      /*border-radius: 8px;        /* arredonda o contorno da tabela */
+      color: white;              /* mantém o texto branco para contraste */
+    }
+
+    .btnExcluir {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .btnExcluir:hover {
+      background-color: #922b21;
+    }
+
+    /* Reduz exatamente a altura do campo */
+    .choices {
+      width: 100% !important;       /* ocupa apenas a largura da coluna */
+      max-width: 100% !important;   /* impede que estoure para fora */
+      box-sizing: border-box !important;
+      margin-top: 4px !important;
+    }
+
+    /* Ajusta a caixa interna para a mesma altura dos outros inputs */
+    .choices__inner {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      border: 1px solid #ccc !important;
+      border-radius: 6px !important;
+      padding: 2px 7px !important;
+      min-height: 44px !important;   /* <<< ajuste principal */
+      height: auto !important;       /* <<< força a altura */
+      display: flex;
+      /* align-items: center;           /* centraliza o texto */
+      align-items: flex-start !important;
+      flex-wrap: wrap;
+    }
+
+    /* Ajusta o texto interno para não aumentar a altura */
+    .choices__inner .choices__item {
+      padding: 0 !important;
+      margin: 0 !important;
+      font-size: 14px !important;
+      line-height: 1.2 !important;   /* <<< evita expansão vertical */
+    }
+
+    /* Remove espaço extra no modo single */
+    .choices__list--single {
+      padding: 0 !important;
+    }
+
+    /* Dropdown com altura normal */
+    .choices__list--dropdown {
+      border-radius: 6px !important;
+      border: 1px solid #ccc !important;
+      margin-top: 2px !important;
+    }
+
+    @media (min-width: 700px) {
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px 20px;
+      }
+    }
+
+    @media print {
+      /* Ocultar botões */
+      button, .sem-imprimir {
+      display: none !important;
+      }
+
+      /* Ajustar largura da página */
+      body {
+        margin: 20px;
+        font-size: 14px;
+      }
+    }
+
+    @media print {
+      .no-print {
+      display: none !important;
+      }
+
+      /* Opcional — esconder também todos os botões */
+      /*button { */
+      /*display: none !important;*/
+      /*}*/
+    }    
+
+    /* === CONTAINER PRINCIPAL === */
+    .choices, #itensSelect, #itensSelect + .choices {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow: visible !important;
+    }
+
+    /* Área interna ajustável */
+    .choices__inner {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      padding: 8px !important;
+      min-height: 44px !important;
+      height: auto !important;
+    }
+
+    /* === GRID DAS TAGS (4 POR LINHA) === */
+    .choices__list--multiple {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 8px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Aparência das tags */
+    .choices__list--multiple .choices__item {
+      width: 100% !important;
+      text-align: center !important;
+      margin: 0 !important;
+      padding: 4px 8px !important;
+      font-size: 13px !important;
+      border-radius: 6px !important;
+      box-sizing: border-box !important;
+    }
+
+    /* === CENTRALIZAÇÃO DO PLACEHOLDER REAL === */
+    .choices[data-type*="select-multiple"] 
+    .choices__list--single 
+    .choices__placeholder {
+      width: 100% !important;
+      text-align: center !important;
+      display: block !important;
+      margin: 0 auto !important;
+    }
+
+    /* Cor de fundo dos campos desabilitados */
+    input:disabled,
+    select:disabled,
+    textarea:disabled {
+      background-color: #e0e0e0; /* cinza mais escuro */
+      color: #555;              /* texto mais apagado */
+      cursor: not-allowed;      /* cursor de campo bloqueado */
+    }
+   
+    #numeroOcorrencia {
+      font-weight: bold;
+      color: #000;
+    }
+
+    #numeroOcorrencia[readonly] {
+      background-color: #d4f5d4;
+      font-weight: bold;
+      color: #000;
+      cursor: not-allowed;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="logo-wrap">
+      <img src="Logo_CEPDEC.PNG" alt="Logo da CEPDEC" class="logo">
+    </div>
+
+    <h2>Registro de Ocorrências e Desastres</h2>
+
+    <form id="formOcorrencia">
+
+      <fieldset>
+        <legend>Escolha o Tipo de Registro</legend>
+        <div class="grid-2">
+          <button type="button" id="botaoCadastrar" onclick="cadastraOcorrencia()" >Cadastrar Ocorrência</button>
+          <button type="button" id="botaoAtualizar" onclick="atualizaOcorrencia()" >Atualizar Ocorrência</button>
+        </div>
+      </fieldset>
+      
+    </form>
+
+  </div>
+
+  <script>
+
+    function cadastraOcorrencia() {
+      window.location.href = 'Notificação de Desastres - (Original).html';
+    }
+
+    function atualizaOcorrencia() {
+      window.location.href = 'Notificação de Desastres - (atualização).html';
+    }
+
+  </script>
+
+</body>
+
+</html>
