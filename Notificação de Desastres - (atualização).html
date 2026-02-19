@@ -204,8 +204,16 @@
     }
    
     .grid-4 :is(input, select) {
-      height: 42px;
       box-sizing: border-box;
+    }
+
+    .grid-4 input,
+    .grid-4 select,
+    .grid-4 button {
+     width: 100%;
+     height: 40px; /* mesma altura padrão dos inputs */
+     box-sizing: border-box;
+     font: inherit;
     }
 
     .grid-4 input,
@@ -462,6 +470,29 @@
       cursor: not-allowed;
     }
 
+    .message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  
+      background: #ffffff;
+      color: #E74C3C;
+      padding: 16px 24px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  
+      z-index: 9999;
+      max-width: 400px;
+      text-align: center;
+
+      display: none; /* começa escondido */
+    }
+
+    #limparFiltroBtn {
+     margin-top: 22px;
+    }
+
   </style>
 
 </head>
@@ -477,16 +508,46 @@
 
     <form id="formOcorrencia">
 
+      <fieldset style= "border: none; display:flex; justify-content:center; text-align: center;" >
+          <label style= "color: #0047AB; font-size: 16px; font-weight: bold;" >::: Preencha os campos na sequência em que são apresentados com especial atenção aos campos obrigatórios (*) :::</label>
+      </fieldset>
+
+      <fieldset style= "border: none; display:flex; justify-content:center; text-align: center;" >
+        <div>
+          <label style= "color: #0047AB; font-size: 16px; font-weight: bold;" >Selecione o Tipo de Responsável pelo Registro</label>
+          <select id="responsavelSelect" name="responsavel" >
+            <option value="plantonista" selected>Plantonista CEPDEC</option>
+            <option value="comunicante">Operador da Defesa Civil Municipal</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset style= "border: none; display:flex; justify-content:center; text-align: center;" >
+        <legend>Preencha os Campos de Busca para Filtrar e/ou Procure na Lista "Número da Ocorrência"</legend>
+        <div class="grid-4">
+          <label>Data inicial
+            <input type="date" id="filtroDataInicio">
+          </label>
+          <label>Data final
+            <input type="date" id="filtroDataFim">
+          </label>
+          <label>Município
+            <select id="filtroMunicipio" name="municipiosRegistrados" >
+              <option value="">Selecione...</option>
+            </select>
+          </label>
+          <label><button class="botoes-container" type="button" id="limparFiltroBtn" >Limpar filtro</button></label>
+        </div>
+      </fieldset>
+
       <fieldset>
         <legend>1. Identificação da Ocorrência</legend>
         <div class="grid-3">
-          <label title= "Escolha uma ocorrência já cadastrada para atualizá-la" class = "span-2">Número da Ocorrência
+          <label title= "Escolha uma ocorrência já cadastrada para atualizá-la" class = "full">Número da Ocorrência *
             <select id="numeroOcorrenciaSelect" name="numeroOcorrencia" required>
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-
-          <label><button class="botoes-container" type="button" id="buscarOcorrenciaBtn" >Buscar dados da Ocorrência</button></label>
 
           <label>Tipo de Ocorrência <input type="text" name="tipoOcorrencia" readonly ></label>
           <label>Data da Ocorrência <input id= "dataOcorrencia" type="date" name="dataOcorrencia" readonly ></label>
@@ -494,22 +555,40 @@
         </div>
       </fieldset>
       
-      <fieldset>
+      <fieldset id="fieldsetPlantonista" >
         <legend>2. Identificação do Comunicante</legend>
         <div class="grid-3">
-          <label class="span-2">REPDEC - Responsável
-            <select id="repdecSelect" name="repdec" required>
+          <label class="span-2">Plantonista CEPDEC *
+            <select id="plantonistaSelect" name="plantonista" required>
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label>Instituição Comunicante
-            <select id="instituicaoSelect" name="instituicaoComunicante" required>
+          <label>Número Funcional * <input id="numeroFuncional" name="numeroFuncional" type="text" maxlength="7" inputmode="numeric" required></label>
+          <label class="full">Fontes de Informação Utilizadas para o Registro  (OBS: não excluir as já catalogadas, exceto para efeito de correção.)
+            <select id="fontesInformacaoSelect" name="fontesInformacao" multiple>
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label>Nome do Comunicante <input type="text" id="nomeComunicante" name="nomeComunicante" style="text-transform: uppercase;" required></label>
-          <label>Telefone do Comunicante <input id="telefoneComunicante" name="telefoneComunicante" type="text" required maxlength="13" inputmode="numeric" placeholder="00 00000-0000"></label>
-          <label>E-mail do Comunicante <input type="email" id="emailComunicante" name="emailComunicante" required></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="fieldsetComunicante" style="display:none">
+        <legend>2. Identificação do Comunicante</legend>
+        <div class="grid-3">
+          <label>REPDEC - Responsável *
+            <select id="repdecSelect" name="repdec">
+              <option value="" disabled selected>Carregando...</option>     
+            </select>
+          </label>
+          <label>Instituição Comunicante *
+            <select id="instituicaoSelect" name="instituicaoComunicante">
+              <option value="" disabled selected>Carregando...</option>     
+            </select>
+          </label>
+          <label>Senha * <input id= "senha" type="text" name="senha"></label>
+          <label>Nome do Comunicante * <input type="text" id="nomeComunicante" name="nomeComunicante" style="text-transform: uppercase;"></label>
+          <label>Telefone do Comunicante * <input id="telefoneComunicante" name="telefoneComunicante" type="text" maxlength="13" inputmode="numeric" placeholder="00 00000-0000"></label>
+          <label>E-mail do Comunicante * <input type="email" id="emailComunicante" name="emailComunicante"></label>
         </div>
       </fieldset>
 
@@ -535,15 +614,15 @@
 
           <label class = "span-2">COBRADE <input type="text" name="cobrade" readonly ></label>
 
-          <label class = "span-2">Rio ou Córrego Próximo <input type="text" name="rioCorregro" readonly ></label>
+          <label class = "span-2">Rio ou Córrego Próximo <input type="text" name="rioCorregro" ></label>
           <label  title="Informe a cota máxima de inundação atingida nas casas (em metros)!">Cota Máxima de Inundação (mts) <input type="number" id="cotaMaxima" name="cotaMaxima" inputmode="decimal" step="0.01"></label>
-          <label class = "full">Relato de Estrutura Colapsada <textarea name="relatoEstruturaColapsada" readonly ></textarea></label>
-          <label class = "full">Relato Detalhado da Ocorrência <textarea name="relatoDetalhadoOcorrencia" readonly ></textarea></label>
+          <label class = "full">Relato de Estrutura Colapsada <textarea name="relatoEstruturaColapsada" ></textarea></label>
+          <label class = "full">Relato Detalhado da Ocorrência * <textarea name="relatoDetalhadoOcorrencia" required></textarea></label>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend>5. Informe Novos Danos e Prejuízos Humanos</legend>
+        <legend>5. Total de Danos e Prejuízos Humanos</legend>
         <div class="grid-3">
           <label>Desalojados <input type="number" id="desalojados" name="desalojados" min="0"></label>
           <label>Desabrigados <input type="number" id="desabrigados" name="desabrigados" min="0"></label>
@@ -557,7 +636,7 @@
       </fieldset>
 
       <fieldset>
-        <legend>6. Informe Novos Danos e Prejuízos Materiais</legend>
+        <legend>6. Total de Danos e Prejuízos Materiais</legend>
         <div class="grid-3">
           <label>Unidades Habitacionais Afetadas <input type="number" id="unidHabitAfetadas" name="unidHabitAfetadas" min="0"></label>
           <label>Instalações Particulares Afetadas <input type="number" id="instPartAfetadas" name="instPartAfetadas" min="0"></label>
@@ -570,62 +649,62 @@
       <fieldset>
         <legend>7. Conferência e Atualização dos Dados de Participação Institucional e Ações Adotadas </legend>
         <div class="grid-3">
-          <label class="full">Relação de Recursos Empenhados no Desastre
+          <label class="full">Relação de Recursos Empenhados no Desastre  (OBS: não excluir os já catalogados, exceto para efeito de correção.)
             <select id="recursosSelect" name="recursosEmpenhados" multiple>
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label class="full">Participação Institucional
+          <label class="full">Participação Institucional  (OBS: não excluir os já catalogados, exceto para efeito de correção.)
             <select id="participacaoSelect" name="participacaoInstitucional" multiple>
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
           <label>Total de Servidores Voluntários Atuando pelo Município <input type="number" name="servidoresVoluntarios" min="0"></label>
-          <label>Ativado SCO com a instalação de um PC Local no Município?
-            <select name="ativacaoSCO" required>
-              <option value=""></option>
+          <label>Ativado SCO com a instalação de um PC Local no Município? *
+            <select id="ativacaoSCO" name="ativacaoSCO" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o município emitiu ou emitirá decreto de situação de anormalidade!">O Município Emitiu ou Emitirá Decreto de Situação de Anormalidade?
-            <select name="emissaoDecreto" required>
-              <option value=""></option>
+          <label title="Informe se o município emitiu ou emitirá decreto de situação de anormalidade!">O Município Emitiu ou Emitirá Decreto de Situação de Anormalidade? *
+            <select id="emissaoDecreto" name="emissaoDecreto" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o município necessita de apoio para o restabelecimento de serviços essenciais!">O Município Necessita de Apoio?
-            <select name="necessitaApoio" required>
-              <option value=""></option>
+          <label title="Informe se o município necessita de apoio para o restabelecimento de serviços essenciais!">O Município Necessita de Apoio? *
+            <select id="necessitaApoio" name="necessitaApoio" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o município solicitou ou solicitará Itens de Assistência Humanitária da CEPDEC!">Solicitação de IAH à CEPDEC?
-            <select name="solicitaIAH" required>
-              <option value=""></option>
+          <label title="Informe se o município solicitou ou solicitará Itens de Assistência Humanitária da CEPDEC!">Solicitação de IAH à CEPDEC? *
+            <select id="solicitaIAH" name="solicitaIAH" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o foi Instalado Posto de Comando!">Houve Instalação de Posto Comando?
-            <select name="postoComando" required>
-              <option value=""></option>
+          <label title="Informe se o foi Instalado Posto de Comando!">Houve Instalação de Posto Comando? *
+            <select id="postoComando" name="postoComando" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o foi Instalado Abrigo!">Houve Instalação de Abrigo?
-            <select name="instalacaoAbrigo" required>
-              <option value=""></option>
+          <label title="Informe se o foi Instalado Abrigo!">Houve Instalação de Abrigo? *
+            <select id="instalacaoAbrigo" name="instalacaoAbrigo" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o foi Instalado Centro de Logística Humanitária!">Houve Instalação de Centro Logística?
-            <select name="centroLogistica" required>
-              <option value=""></option>
+          <label title="Informe se o foi Instalado Centro de Logística Humanitária!">Houve Instalação de Centro Logística? *
+            <select id="centroLogistica" name="centroLogistica" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
@@ -662,112 +741,20 @@
 
 <script>
 
-  const appScriptUrl = 'https://script.google.com/macros/s/AKfycbxHigz7wA4aLOZ8QMkv2MEzQ9l-ZS8zEpHy427bwyMmrpI8zwjRSNGesa19m157HCMY/exec';
-  let lookupData = {};
-  let abortBuscaOcorrencia = null;
-  let statusTimeout = null;
+  const appScriptUrl = 'https://script.google.com/macros/s/AKfycbwU1QnO2qJGOjDR6aFXK7gqwFCgvCJ_pVrwWOOD0jOgW8_fo1CGnpXqq1_i9cZoP8D1/exec';
 
   const form = document.getElementById('formOcorrencia');
-  const saveBtn = document.getElementById('saveToSheetButton');
-  const statusArea = document.getElementById('status');
-  
-  const buscarBtn = document.getElementById('buscarOcorrenciaBtn');
-  const numeroSelect = document.getElementById('numeroOcorrenciaSelect');
+
+  let lookupData = {};
 
   // Variáveis globais para as instâncias do Choices.js
   let recursosChoices = null;
   let participacaoChoices = null;
-
-  const telInput = document.getElementById('telefoneComunicante');
-  telInput.addEventListener('input', function () {
-    // Remove tudo que não for número
-    let valor = this.value.replace(/\D/g, '');
-
-    // Limita a 11 dígitos
-    valor = valor.substring(0, 11);
-
-    // Aplica a máscara
-    if (valor.length > 10) {
-      // Formato celular: 00 00000-0000
-      valor = valor.replace(/(\d{2})(\d{5})(\d{1,4})/, "$1 $2-$3");
-    } else if (valor.length > 9) {
-      // Início do formato fixo: 00 0000-0000
-      valor = valor.replace(/(\d{2})(\d{4})(\d{1,4})/, "$1 $2-$3");
-    }
-    this.value = valor;
-  });
+  let fontesInformacaoChoices = null;
 
 
-  const latitudeInput = document.getElementById('latitude');
-  latitudeInput.addEventListener('input', function () {
-
-    // Remove tudo que não for número
-    let valor = this.value.replace(/\D/g, '');
-
-    // Limita a exatamente 8 dígitos
-    valor = valor.substring(0, 8);
-
-    // Aplica a máscara quando houver ao menos 1 dígito
-    if (valor.length >= 1) {
-      valor = valor.replace(/^(\d{0,2})(\d{0,6})$/, function (_, int, dec) {
-        if (dec) return `-${int},${dec}`;
-        return `-${int}`;
-      });
-    }
-    this.value = valor;
-  });
-
-
-  const longitudeInput = document.getElementById('longitude');
-  longitudeInput.addEventListener('input', function () {
-
-    // Remove tudo que não for número
-    let valor = this.value.replace(/\D/g, '');
-
-    // Limita a exatamente 8 dígitos
-    valor = valor.substring(0, 8);
-
-    // Aplica a máscara quando houver ao menos 1 dígito
-    if (valor.length >= 1) {
-      valor = valor.replace(/^(\d{0,2})(\d{0,6})$/, function (_, int, dec) {
-        if (dec) return `-${int},${dec}`;
-        return `-${int}`;
-      });
-    }
-    this.value = valor;
-  });
-
-  // Mostra a lista de arquivos selecionados no campo Fotos
-  document.getElementById('fotosInput').addEventListener('change', function () {
-    const lista = document.getElementById('listaFotos');
-    lista.innerHTML = ""; // limpa antes
-
-    for (const file of this.files) {
-      const li = document.createElement("li");
-      li.textContent = file.name;
-      lista.appendChild(li);
-    }
-  });
-
-  // Função para popular selects normais
-  function populateSelect(selectElement, items) {
-    selectElement.innerHTML = '<option value="" disabled selected>Selecione...</option>';
-
-    items.forEach(item => {
-      const option = document.createElement('option');
-      option.value = item;
-      option.textContent = item;
-      selectElement.appendChild(option);
-    });
-  }
-
-  // Função para popular selects com Choices.js
-  function populateSelectChoices(choicesInstance, items) {
-    const list = items.map(i => ({ value: i, label: i }));
-    choicesInstance.clearStore();
-    choicesInstance.setChoices(list, 'value', 'label', true);
-  }
-  
+  //////////////////////////////////// ***** FUNÇÃO fetch ***** ////////////////////////////////////
+ 
   async function fetchLookupData() {
     const lookupUrl = `${appScriptUrl}?action=lookup`;
     mostrarStatus("Carregando dados de apoio...", 0);
@@ -779,15 +766,22 @@
 
       lookupData = data;
 
-      // Popula selects normais
+      // ***** Popula selects normais ***** //
+
       //if (document.getElementById('municipioOcorrenciaSelect'))
       //  populateSelect(document.getElementById('municipioOcorrenciaSelect'), lookupData.municipio || []);
+
+      if (document.getElementById('filtroMunicipio'))
+        populateSelect(document.getElementById('filtroMunicipio'), lookupData.municipiosRegistrados || []);
 
       if (document.getElementById('numeroOcorrenciaSelect'))
         populateSelect(document.getElementById('numeroOcorrenciaSelect'), lookupData.numeroOcorrencia || []);
 
       if (document.getElementById('repdecSelect'))
         populateSelect(document.getElementById('repdecSelect'), lookupData.repdec || []);
+
+      if (document.getElementById('plantonistaSelect'))
+        populateSelect(document.getElementById('plantonistaSelect'), lookupData.plantonista || []);
 
       //if (document.getElementById('tipoOcorrenciaSelect'))
       //  populateSelect(document.getElementById('tipoOcorrenciaSelect'), lookupData.tipoOcorrencia || []);
@@ -801,7 +795,8 @@
       //if (document.getElementById('cobradeSelect'))
       //  populateSelect(document.getElementById('cobradeSelect'), lookupData.cobrade || []);
 
-      // Inicializa Choices.js para selects múltiplos e preenche-os
+      // ***** Inicializa Choices.js para selects múltiplos e preenche-os ***** //
+
       if (document.getElementById('recursosSelect') && !recursosChoices) {
         recursosChoices = new Choices('#recursosSelect', {
           removeItemButton: true,
@@ -842,155 +837,320 @@
         populateSelectChoices(participacaoChoices, lookupData.participacaoInstitucional || []);
       }
 
-      mostrarStatus("✅ Dados carregados com sucesso!", 3000);
+      if (document.getElementById('fontesInformacaoSelect') && !fontesInformacaoChoices) {
+        fontesInformacaoChoices = new Choices('#fontesInformacaoSelect', {
+          removeItemButton: true,
+          searchPlaceholderValue: "Buscar fonte...",
+          placeholderValue: "Selecione...",
+          noResultsText: "Nenhuma fonte de informação encontrada",
+          itemSelectText: "",
+        });
+        // ⭐ FECHAR DROPDOWN APÓS CADA SELEÇÃO
+        document.querySelector('#fontesInformacaoSelect').addEventListener('change', () => {
+          fontesInformacaoChoices.hideDropdown();
+        });
+        // ⭐ MOSTRAR DROPDOWN AO CLICAR NO CAMPO
+        const container = document.querySelector('#fontesInformacaoSelect').closest('.choices');
+        container.addEventListener('click', () => {
+          fontesInformacaoChoices.showDropdown();
+        });
+        populateSelectChoices(fontesInformacaoChoices, lookupData.fontesInformacao || []);
+      }
+
+      mostrarStatus("✅ Dados carregados com sucesso!", 1500);
 
     } catch (e) {
       console.error("Falha ao carregar dados de lookup:", e);
       mostrarStatus("❌ Erro ao carregar dados de apoio.", 3000);
     }
 
+    /// *** PROMOVE A BUSCA DOS DADOS A PARTIR DA SELEÇÃO DE UM NÚMERO DE OCORRÊNCIA *** ///  
+    const select = document.getElementById("numeroOcorrenciaSelect");
+    if (select) {
+      select.addEventListener("change", buscaDadosPreencheFormulario);
+    }
+
   } // Fim de fetchLookupData()
 
 
-  // Adiciona cada imagem Base64
-  const LIMITE_POR_IMAGEM_MB = 2;   // 2 MB por imagem
-  const LIMITE_TOTAL_MB = 10;      // 10 MB no total
-  async function filesToBase64(files) {
-    let totalSize = 0;
-    const resultados = [];
+  //////////////////////////////////// ***** FORMATA E ORGANIZA OS DADOS DO FORMULÁRIO ***** ////////////////////////////////////
 
-    for (const file of files) {
-      const sizeMB = file.size / (1024 * 1024);
-      if (sizeMB > LIMITE_POR_IMAGEM_MB) {
-        throw new Error(`A imagem "${file.name}" excede ${LIMITE_POR_IMAGEM_MB} MB`);
-      }
-      totalSize += sizeMB;
-    }
+  const telInput = document.getElementById('telefoneComunicante');
+  telInput.addEventListener('input', function () {
+    // Remove tudo que não for número
+    let valor = this.value.replace(/\D/g, '');
 
-    if (totalSize > LIMITE_TOTAL_MB) {
-      throw new Error(`Tamanho total das imagens excede ${LIMITE_TOTAL_MB} MB`);
-    }
+    // Limita a 11 dígitos
+    valor = valor.substring(0, 11);
 
-    let concluido = 0;
+    // Aplica a máscara
+    if (valor.length > 10) {
+      // Formato celular: 00 00000-0000
+      valor = valor.replace(/(\d{2})(\d{5})(\d{1,4})/, "$1 $2-$3");
+    } else if (valor.length > 9) {
+      // Início do formato fixo: 00 0000-0000
+      valor = valor.replace(/(\d{2})(\d{4})(\d{1,4})/, "$1 $2-$3");
+    }
+    this.value = valor;
+  });
 
-    for (const file of files) {
-      const base64 = await new Promise(resolve => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(',')[1]);
-        reader.readAsDataURL(file);
+  const latitudeInput = document.getElementById('latitude');
+  latitudeInput.addEventListener('input', function () {
+
+    // Remove tudo que não for número
+    let valor = this.value.replace(/\D/g, '');
+
+    // Limita a exatamente 8 dígitos
+    valor = valor.substring(0, 8);
+
+    // Aplica a máscara quando houver ao menos 1 dígito
+    if (valor.length >= 1) {
+      valor = valor.replace(/^(\d{0,2})(\d{0,6})$/, function (_, int, dec) {
+        if (dec) return `-${int},${dec}`;
+        return `-${int}`;
       });
+    }
+    this.value = valor;
+  });
 
-      resultados.push({
-        name: file.name,
-        type: file.type,
-        data: base64
+  const longitudeInput = document.getElementById('longitude');
+  longitudeInput.addEventListener('input', function () {
+
+    // Remove tudo que não for número
+    let valor = this.value.replace(/\D/g, '');
+
+    // Limita a exatamente 8 dígitos
+    valor = valor.substring(0, 8);
+
+    // Aplica a máscara quando houver ao menos 1 dígito
+    if (valor.length >= 1) {
+      valor = valor.replace(/^(\d{0,2})(\d{0,6})$/, function (_, int, dec) {
+        if (dec) return `-${int},${dec}`;
+        return `-${int}`;
       });
+    }
+    this.value = valor;
+  });
 
+  // Mostra a lista de arquivos selecionados no campo Fotos
+  document.getElementById('fotosInput').addEventListener('change', function () {
+    const lista = document.getElementById('listaFotos');
+    lista.innerHTML = ""; // limpa antes
+    for (const file of this.files) {
+      const li = document.createElement("li");
+      li.textContent = file.name;
+      lista.appendChild(li);
+    }
+  });
+
+  // Função para popular selects normais
+  function populateSelect(selectElement, items) {
+    selectElement.innerHTML = '<option value="" disabled selected>Selecione...</option>';
+    items.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item;
+      option.textContent = item;
+      selectElement.appendChild(option);
+    });
+  }
+
+  // Função para popular selects com Choices.js
+  function populateSelectChoices(choicesInstance, items) {
+    const list = items.map(i => ({ value: i, label: i }));
+    choicesInstance.clearStore();
+    choicesInstance.setChoices(list, 'value', 'label', true);
+  }
+
+  /// *** MOSTRA AS MENSAGENS *** ///
+  let statusTimeout = null;
+  const statusArea = document.getElementById('status');
+  function mostrarStatus(mensagem, tempo = 3000) {
+    // ⛔ Cancela timeout anterior
+    if (statusTimeout) {
+      clearTimeout(statusTimeout);
+      statusTimeout = null;
     }
 
-    return resultados;
+    statusArea.textContent = mensagem;
+    statusArea.style.display = "block";
+
+    if (tempo > 0) {
+      statusTimeout = setTimeout(() => {
+        statusArea.style.display = "none";
+        statusArea.textContent = '';
+        statusTimeout = null;
+      }, tempo);
+    }
+  }
+
+  /// *** VOLTA AO TOPO DO FORMULÁRIO *** ///
+  function voltarAoTopo() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }
 
 
-  saveBtn.addEventListener('click', async () => {
+  //////////////////////////////////// ***** LIMPA E PREPARA O AMBIENTE DO FORMULÁRIO ***** ////////////////////////////////////
 
-    // 🔸 Validação automática dos campos required
-    if (!form.checkValidity()) {
-      form.reportValidity(); // mostra os erros na tela
-      return; // interrompe o envio
+  /// *** LIMPA O FORMULÁRIO *** ///
+  function limparFormulario() {
+    const form = document.querySelector('form');
+    if (form) {
+
+        const dataInicio = document.getElementById("filtroDataInicio").value;
+        const dataFim = document.getElementById("filtroDataFim").value;
+        const municipio = document.getElementById("filtroMunicipio").value;
+
+        form.reset(); // Limpa a maioria dos campos nativos
+
+        // 🎯 Correção/Melhoria: Limpar a lista visual de fotos
+        document.getElementById('listaFotos').innerHTML = "";
+        document.getElementById('fotosInput').value = ""; // Também limpa o input de arquivo
+
+        // Limpa visualmente os campos do Choices.js
+        if (recursosChoices) recursosChoices.removeActiveItems();
+        if (participacaoChoices) participacaoChoices.removeActiveItems();
+        if (fontesInformacaoChoices) fontesInformacaoChoices.removeActiveItems();
+
+        // Volta os selects normais para a opção "Selecione..."
+        const selects = form.querySelectorAll('select');
+        selects.forEach(select => {
+            if (!select.hasAttribute('multiple')) {
+                select.value = "";
+            }
+        });
+
+        // Mantem os dados do filtro
+        document.getElementById("filtroDataInicio").value = dataInicio;
+        document.getElementById("filtroDataFim").value = dataFim;
+        document.getElementById("filtroMunicipio").value = municipio;
     }
 
-    
-    mostrarStatus("Enviando Dados da Ocorrência...", 0);
-    saveBtn.disabled = true;
+    document.getElementById('responsavelSelect').value = 'plantonista';
+    document.getElementById("responsavelSelect").dispatchEvent(new Event("change"));
+
+    document.getElementById("ativacaoSCO").selectedIndex = 0;
+    document.getElementById("emissaoDecreto").selectedIndex = 0;
+    document.getElementById("necessitaApoio").selectedIndex = 0;
+    document.getElementById("solicitaIAH").selectedIndex = 0;
+    document.getElementById("postoComando").selectedIndex = 0;
+    document.getElementById("instalacaoAbrigo").selectedIndex = 0;
+    document.getElementById("centroLogistica").selectedIndex = 0;
+
+    voltarAoTopo()
+
+  }
+
+  /// *** LIMPA FILTRO DE BUSCA *** ///
+  const limparBtn = document.getElementById('limparFiltroBtn');
+  limparBtn.addEventListener('click', async () => {
+    document.getElementById("filtroDataInicio").value = "";
+    document.getElementById("filtroDataFim").value = "";
+    document.getElementById("filtroMunicipio").value = "";
+    populateSelect(document.getElementById('numeroOcorrenciaSelect'), lookupData.numeroOcorrencia || []);
+
+    limparFormulario()
+
+  });      
+
+  /// *** CONECTAR EVENTOS DOS FILTROS *** ///
+  function configurarFiltroOcorrencias() {
+    const dataInicio = document.getElementById("filtroDataInicio");
+    const dataFim = document.getElementById("filtroDataFim");
+    const municipio = document.getElementById("filtroMunicipio");
+
+    if (!dataInicio || !dataFim || !municipio) return;
+
+    dataInicio.addEventListener("change", carregarOcorrenciasFiltradas);
+    dataFim.addEventListener("change", carregarOcorrenciasFiltradas);
+    municipio.addEventListener("change", carregarOcorrenciasFiltradas);
+  }
+
+  /// *** CARREGA NÚMERO DE OCORRÊNCIAS CONFORME O FILTRO *** ///
+  async function carregarOcorrenciasFiltradas() {
+    const dataInicio = document.getElementById("filtroDataInicio").value;
+    const dataFim = document.getElementById("filtroDataFim").value;
+    const municipio = document.getElementById("filtroMunicipio").value;
+
+    const numeroSelect = document.getElementById("numeroOcorrenciaSelect");
+
+    // Só executa quando tudo estiver preenchido
+    if (!dataInicio || !dataFim || !municipio) {
+      //if (numeroSelect) numeroSelect.innerHTML = '<option value="">Selecione...</option>';
+      return;
+    }
+
+    mostrarStatus("🔎 Buscando ocorrências filtradas...", 0);
 
     try {
-
-      const formData = new FormData(form);
-
-
-      const fotosInput = document.getElementById('fotosInput');
-
-      let fotosBase64 = [];
-
-      if (fotosInput.files.length > 0) {
-        fotosBase64 = await filesToBase64(fotosInput.files);
-      }
-
-      formData.append('fotosBase64', JSON.stringify(fotosBase64));
-
-
-      // força nome em maiúsculas
-      formData.set('nomeComunicante',
-        formData.get('nomeComunicante').toUpperCase()
-      );
-
-      // ⭐ ALTERADO — capturar selecionados do Choices
-      const recursosSelecionados = recursosChoices.getValue(true); 
-      const participacaoSelecionados = participacaoChoices.getValue(true); 
-
-      // salvar como string separada por vírgula
-      formData.set('recursosEmpenhados', recursosSelecionados.join(", "));
-      formData.set('participacaoInstitucional', participacaoSelecionados.join(", "));
-
-      // 🔸 Envio de Dados para o Apps Script que precisa identificar a ação:
-      formData.append('action', 'saveOne');
-
-      const response = await fetch(appScriptUrl, {
-        method: "POST",
-        body: formData
+      const params = new URLSearchParams({
+        action: "getOcorrenciasFiltradas",
+        dataInicio,
+        dataFim,
+        municipio
       });
 
-      const result = await response.json();
+      const resposta = await fetch(`${appScriptUrl}?${params.toString()}`);
+      const json = await resposta.json();
 
-      if (result.status === 'SUCCESS') {
-        
-        mostrarStatus("✅ Registro salvo!", 2000);
-      } else {
-        mostrarStatus("⚠️ Erro: " + result.message, 7000);
+      if (json.status !== "SUCCESS") {
+        mostrarStatus("⚠️ " + (json.message || "Erro ao buscar ocorrências"), 3000);
+        return;
       }
 
-    } catch (err) {
-      mostrarStatus("❌ Falha: " + err.message);
+      preencherSelectNumero(json.data || []);
+
+      limparFormulario()
+
+      // Mantem os dados do filtro
+      document.getElementById("filtroDataInicio").value = dataInicio;
+      document.getElementById("filtroDataFim").value = dataFim;
+      document.getElementById("filtroMunicipio").value = municipio;  
+
+      mostrarStatus("✅ Ocorrências carregadas", 1500);
+
+    } catch (erro) {
+      console.error("Erro ao buscar ocorrências filtradas:", erro);
+      mostrarStatus("❌ Falha na comunicação com o servidor", 3000);
     }
+  }
 
+  /// *** POPULA O SELECT DE OCORRÊNCIAS CONFORME O FILTRO *** ///
+  function preencherSelectNumero(lista) {
+    const select = document.getElementById("numeroOcorrenciaSelect");
+    if (!select) return;
 
-    finally {
+    select.innerHTML = '<option value="" disabled selected>Selecione...</option>';
 
-      saveBtn.disabled = false;
-
-      setTimeout(() => {
-        progress.style.display = "none";
-        progress.value = 0;
-        text.textContent = "";
-      }, 2000);
-
-    }
-
-    form.reset();
-
-    // ⭐ ADICIONADO — limpar visual do Choices também
-    if (recursosChoices) recursosChoices.removeActiveItems();
-    if (participacaoChoices) participacaoChoices.removeActiveItems();
-    document.getElementById('listaFotos').innerHTML = "";
-    document.getElementById('fotosInput').value = ""; // Também limpa o input de arquivo
-
-    //Volta os selects normais para a opção "Selecione..."
-    const selects = form.querySelectorAll('select');
-    selects.forEach(select => {
-        if (!select.hasAttribute('multiple')) {
-           select.value = "";
-        }
+    lista.forEach(numero => {
+      const opt = document.createElement("option");
+      opt.value = numero;
+      opt.textContent = numero;
+      select.appendChild(opt);
     });
+  }
 
-  });
 
+  //////////////////////////////////// ***** RECUPERA DADOS DA OCORRÊNCIA PARA EDIÇÃO ***** ////////////////////////////////////
 
-  numeroSelect.addEventListener('change', () => {
-    const numeroSelecionado = numeroSelect.value;
+  /// *** BUSCA OS DADOS REFERENTES AO NÚMERO DA OCORRÊNCIA *** ///
+  const numeroSelect = document.getElementById('numeroOcorrenciaSelect');
+  let abortBuscaOcorrencia = null;
+  async function buscaDadosPreencheFormulario() {
+    const numero = numeroSelect.value;
+    const dataInicio = document.getElementById("filtroDataInicio").value;
+    const dataFim = document.getElementById("filtroDataFim").value;
+    const municipio = document.getElementById("filtroMunicipio").value;
 
     // Limpa qualquer status anterior
     mostrarStatus('', 0);
+      
+    if (!numero) {
+      mostrarStatus("⚠️ Selecione um número de ocorrência", 3000);
+      return;
+    }
 
     // Cancela busca em andamento, se existir
     if (abortBuscaOcorrencia) {
@@ -1002,60 +1162,17 @@
     limparFormulario();
 
     // Garante que o número continue selecionado
-    numeroSelect.value = numeroSelecionado;
-  });
+    numeroSelect.value = numero;
 
-
-  function limparFormulario() {
-    const form = document.querySelector('form');
-    if (form) {
-        form.reset(); // Limpa a maioria dos campos nativos
-
-        // 🎯 Correção/Melhoria: Limpar a lista visual de fotos
-        document.getElementById('listaFotos').innerHTML = "";
-        document.getElementById('fotosInput').value = ""; // Também limpa o input de arquivo
-
-        // Limpa visualmente os campos do Choices.js
-        if (recursosChoices) recursosChoices.removeActiveItems();
-        if (participacaoChoices) participacaoChoices.removeActiveItems();
-
-        // Volta os selects normais para a opção "Selecione..."
-        const selects = form.querySelectorAll('select');
-        selects.forEach(select => {
-            if (!select.hasAttribute('multiple')) {
-                select.value = "";
-            }
-        });
-    }
-
-  }
-
-
-  // numeroSelect.addEventListener('keydown', (e) => {
-  //   if (e.key === 'Enter') {
-  //     buscarBtn.click();
-  //   }
-  // });
-
- 
-  buscarBtn.addEventListener('click', async () => {
-    const numero = numeroSelect.value;
-
-    if (!numero) {
-      mostrarStatus("⚠️ Selecione um número de ocorrência", 3000);
-      return;
-    }
-
-    // Cancela busca anterior
-    if (abortBuscaOcorrencia) {
-      abortBuscaOcorrencia.abort();
-    }
-
+    // Mantem os dados do filtro
+    document.getElementById("filtroDataInicio").value = dataInicio;
+    document.getElementById("filtroDataFim").value = dataFim;
+    document.getElementById("filtroMunicipio").value = municipio;     
+      
     abortBuscaOcorrencia = new AbortController();
     const { signal } = abortBuscaOcorrencia;
 
     mostrarStatus("🔎 Buscando ocorrência...", 0);
-    buscarBtn.disabled = true;
     form.classList.add('loading');
 
     try {
@@ -1080,18 +1197,18 @@
         mostrarStatus("❌ Erro ao buscar ocorrência", 5000);
       }
     } finally {
-      buscarBtn.disabled = false;
       form.classList.remove('loading');
     }
-  });
+  }
 
+  /// *** PREENCHE O FORMULÁRIO COM OS DADOS ENCONTRADOS *** ///
   function preencherFormulario(dados) {
     Object.keys(dados).forEach(name => {
       const field = form.querySelector(`[name="${name}"]`);
       if (!field) return;
 
       // SELECT múltiplo com Choices
-      if (field.multiple && (name === 'recursosEmpenhados' || name === 'participacaoInstitucional')) {
+      if (field.multiple && (name === 'recursosEmpenhados' || name === 'participacaoInstitucional' || name === 'fontesInformacao')) {
         const valores = String(dados[name]).split(',').map(v => v.trim());
 
         if (name === 'recursosEmpenhados' && recursosChoices) {
@@ -1103,13 +1220,18 @@
           participacaoChoices.removeActiveItems();
           participacaoChoices.setChoiceByValue(valores);
         }
+
+        if (name === 'fontesInformacao' && fontesInformacaoChoices) {
+          fontesInformacaoChoices.removeActiveItems();
+          fontesInformacaoChoices.setChoiceByValue(valores);
+        }
+
         return;
       }
 
       // SELECT normal
       if (field.tagName === 'SELECT') {
         field.value = dados[name];
-        field.dispatchEvent(new Event('change'));
         return;
       }
 
@@ -1124,35 +1246,38 @@
     document.getElementById('horarioOcorrencia').value =
       formatarHoraParaInput(dados.horarioOcorrencia);
 
-
     document.getElementById('latitude').value = formatarLatitudeLongitude(dados.latitude);
     document.getElementById('longitude').value = formatarLatitudeLongitude(dados.longitude);
 
+    document.getElementById('plantonistaSelect').value = "";
+    document.getElementById('numeroFuncional').value = "";
+    //document.getElementById('fontesInformacaoSelect').value = "";
     document.getElementById('repdecSelect').value = "";
     document.getElementById('instituicaoSelect').value = "";
     document.getElementById('nomeComunicante').value = "";
     document.getElementById('telefoneComunicante').value = "";
     document.getElementById('emailComunicante').value = "";
-    document.getElementById('cotaMaxima').value = "" ;
-    document.getElementById('desalojados').value = "";
-    document.getElementById('desabrigados').value = "";
-    document.getElementById('feridos').value = "";
-    document.getElementById('enfermos').value = "";
-    document.getElementById('desaparecidos').value = "";
-    document.getElementById('obitos').value = "";   
-    document.getElementById('outrasAfetadas').value = "";
-    document.getElementById('pessoasAbrigo').value = "";
-    document.getElementById('unidHabitAfetadas').value = "";
-    document.getElementById('instPartAfetadas').value = "";
-    document.getElementById('instPublAfetadas').value = "";
-    document.getElementById('viasInterditadas').value = "";    
-    document.getElementById('infraPublAfetadas').value = "";   
-    document.getElementById('outrasInformacoes').value = "";    
-    document.getElementById('sugestoes').value = "";     
+
+    //document.getElementById('cotaMaxima').value = "" ;
+    //document.getElementById('desalojados').value = "";
+    //document.getElementById('desabrigados').value = "";
+    //document.getElementById('feridos').value = "";
+    //document.getElementById('enfermos').value = "";
+    //document.getElementById('desaparecidos').value = "";
+    //document.getElementById('obitos').value = "";   
+    //document.getElementById('outrasAfetadas').value = "";
+    //document.getElementById('pessoasAbrigo').value = "";
+    //document.getElementById('unidHabitAfetadas').value = "";
+    //document.getElementById('instPartAfetadas').value = "";
+    //document.getElementById('instPublAfetadas').value = "";
+    //document.getElementById('viasInterditadas').value = "";    
+    //document.getElementById('infraPublAfetadas').value = "";   
+    //document.getElementById('outrasInformacoes').value = "";    
+    //document.getElementById('sugestoes').value = "";     
 
   }
 
-
+  /// *** FORMATA A LATITUDE E A LONGITUDE *** ///
   function formatarLatitudeLongitude(numerotexto) {
 
     if (!numerotexto) return '';
@@ -1175,7 +1300,7 @@
 
   }
 
-
+  /// *** FORMATA A DATA *** ///
   function formatarDataParaInput(dataTexto) {
     if (!dataTexto) return '';
 
@@ -1189,6 +1314,7 @@
     return `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
   }
 
+  /// *** FORMATA A HORA *** ///
   function formatarHoraParaInput(hora) {
     if (!hora) return '';
 
@@ -1234,25 +1360,341 @@
     return '';
   }
 
-  function mostrarStatus(mensagem, tempo = 3000) {
-    // ⛔ Cancela timeout anterior
-    if (statusTimeout) {
-      clearTimeout(statusTimeout);
-      statusTimeout = null;
+
+  //////////////////////////////////// ***** SALVAMENTO DE DADOS NA PLANILHA GOOGLE ***** ////////////////////////////////////
+
+  /// *** ADICIONA CADA IMAGEM Base64 *** ///
+  const LIMITE_POR_IMAGEM_MB = 2;   // 2 MB por imagem
+  const LIMITE_TOTAL_MB = 10;      // 10 MB no total
+  async function filesToBase64(files) {
+    let totalSize = 0;
+    const resultados = [];
+
+    for (const file of files) {
+      const sizeMB = file.size / (1024 * 1024);
+      if (sizeMB > LIMITE_POR_IMAGEM_MB) {
+        throw new Error(`A imagem "${file.name}" excede ${LIMITE_POR_IMAGEM_MB} MB`);
+      }
+      totalSize += sizeMB;
     }
 
-    statusArea.textContent = mensagem;
-
-    if (tempo > 0) {
-      statusTimeout = setTimeout(() => {
-        statusArea.textContent = '';
-        statusTimeout = null;
-      }, tempo);
+    if (totalSize > LIMITE_TOTAL_MB) {
+      throw new Error(`Tamanho total das imagens excede ${LIMITE_TOTAL_MB} MB`);
     }
+
+    let concluido = 0;
+
+    for (const file of files) {
+      const base64 = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.readAsDataURL(file);
+      });
+
+      resultados.push({
+        name: file.name,
+        type: file.type,
+        data: base64
+      });
+
+    }
+
+    return resultados;
   }
 
+  /// *** SALVA OS DADOS NA PLANILHA DO GOOGLE *** ///
+  const saveBtn = document.getElementById('saveToSheetButton');
+  saveBtn.addEventListener('click', async () => {
+
+    // 🔸 Validação automática dos campos required
+    if (!form.checkValidity()) {
+      form.reportValidity(); // mostra os erros na tela
+      return; // interrompe o envio
+    }
+
+    
+    mostrarStatus("Enviando Dados da Ocorrência...", 0);
+    saveBtn.disabled = true;
+
+    let retorno = null
+
+    try {
+
+      const formData = new FormData(form);
+
+
+      const fotosInput = document.getElementById('fotosInput');
+
+      let fotosBase64 = [];
+
+      if (fotosInput.files.length > 0) {
+        fotosBase64 = await filesToBase64(fotosInput.files);
+      }
+
+      formData.append('fotosBase64', JSON.stringify(fotosBase64));
+
+
+      // força nome em maiúsculas
+      const nomeComunicante = formData.get('nomeComunicante');
+      if (nomeComunicante) {
+        formData.set('nomeComunicante', nomeComunicante.toUpperCase());
+      }
+
+      // ⭐ ALTERADO — capturar selecionados do Choices
+      const recursosSelecionados = recursosChoices ? recursosChoices.getValue(true) : [];
+      const participacaoSelecionados = participacaoChoices ? participacaoChoices.getValue(true) : [];
+      const fontesInformacaoSelecionados = fontesInformacaoChoices ? fontesInformacaoChoices.getValue(true) : [];
+
+      // salvar como string separada por vírgula
+      formData.set('recursosEmpenhados', recursosSelecionados.join(", "));
+      formData.set('participacaoInstitucional', participacaoSelecionados.join(", "));
+      formData.set('fontesInformacao', fontesInformacaoSelecionados.join(", "));
+
+      // 🔸 Envio de Dados para o Apps Script que precisa identificar a ação:
+      formData.append('action', 'saveOne');
+
+      const response = await fetch(appScriptUrl, {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (result.status === 'SUCCESS') {
+        mostrarStatus("✅ Registro salvo!", 1500);
+      } else {
+        mostrarStatus("⚠️" + result.message, 3000);
+      }
+
+      retorno = result.status;
+
+    } catch (err) {
+      mostrarStatus("❌ Falha: " + err.message);
+    }
+
+
+    finally {
+
+      saveBtn.disabled = false;
+
+    }
+
+    if (retorno === 'SUCCESS') {
+
+      form.reset();
+
+      // ⭐ ADICIONADO — limpar visual do Choices também
+      if (recursosChoices) recursosChoices.removeActiveItems();
+      if (participacaoChoices) participacaoChoices.removeActiveItems();
+      if (fontesInformacaoChoices) fontesInformacaoChoices.removeActiveItems();
+      document.getElementById('listaFotos').innerHTML = "";
+      document.getElementById('fotosInput').value = ""; // Também limpa o input de arquivo
+
+      //Volta os selects normais para a opção "Selecione..."
+      const selects = form.querySelectorAll('select');
+      selects.forEach(select => {
+          if (!select.hasAttribute('multiple')) {
+             select.value = "";
+          }
+      });
+
+      document.getElementById('responsavelSelect').value = 'plantonista';
+      document.getElementById("responsavelSelect").dispatchEvent(new Event("change"));
+    
+    }
+
+    voltarAoTopo()
+
+  });
+
+
+  //////////////////////////////////// ***** ALTERNÂNCIA ENTRE CAMPOS DO FORMULÁRIO ***** ////////////////////////////////////
+
+  /// *** ALTERNA ENTRE OS CAMPOS PLANTONISTA E COMUNICANTE *** ///
+  document.getElementById("responsavelSelect").addEventListener("change", function () {
+    const plantonista = document.getElementById("fieldsetPlantonista");
+    const comunicante = document.getElementById("fieldsetComunicante");
+
+    // Esconde e limpa ambos primeiro
+    plantonista.style.display = "none";
+    comunicante.style.display = "none";
+    resetarFieldset("fieldsetPlantonista");
+    resetarFieldset("fieldsetComunicante");
+    nmFunc.style.borderColor = "";
+    nmFunc.style.color = "";
+    acesso.style.borderColor = "";
+    acesso.style.color = "";
+
+    // campos do comunicante
+    const camposComunicante = comunicante.querySelectorAll('[required]');
+    const camposPlantonista = plantonista.querySelectorAll('[required]');
+
+    if (this.value === "plantonista") {
+      plantonista.style.display = "block";
+      camposComunicante.forEach(c => c.removeAttribute('required'));
+      camposPlantonista.forEach(c => c.setAttribute('required', ''));
+    }
+
+    if (this.value === "comunicante") {
+      comunicante.style.display = "block";
+      camposPlantonista.forEach(c => c.removeAttribute('required'));
+      camposComunicante.forEach(c => c.setAttribute('required', ''));
+    }
+
+  });
+
+  /// *** COMPLEMENTA A FUNÇÃO QUE ALTERNA OS PLANTONISTA E COMUNICANTE *** ///
+  function resetarFieldset(fieldsetId) {
+    const fieldset = document.getElementById(fieldsetId);
+    if (!fieldset) return;
+
+    const campos = fieldset.querySelectorAll(
+      'input, select, textarea'
+    );
+
+    campos.forEach(campo => {
+      if (campo.tagName === 'SELECT') {
+        campo.selectedIndex = 0; // primeira opção
+      } 
+      else if (campo.type === 'checkbox' || campo.type === 'radio') {
+        campo.checked = false;
+      } 
+      else {
+        campo.value = '';
+      }
+    });
+  }
+
+
+  //////////////////////////////////// ***** VALIDAÇÃO DE NÚMERO FUNCIONAL E SENHA ***** ////////////////////////////////////
+
+  /// *** VALIDAÇÃO DO NUMERO FUNCIONAL DO PLANTONISTA *** ///
+  const nmFunc = document.getElementById('numeroFuncional');
+  async function validarPlantonistaFrontend() {
+    const plantonista = document.getElementById("plantonistaSelect").value;
+    const numeroFuncional = document.getElementById("numeroFuncional").value;
+
+    if (!plantonista || !numeroFuncional) {
+      //alert("Informe o plantonista e o número funcional.");
+      statusArea.textContent = "⚠️ Informe o plantonista e o número funcional.";
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+      return false;
+    }
+
+    const params = new URLSearchParams({
+      action: "validarPlantonista",
+      plantonista,
+      numeroFuncional
+    });
+
+    try {
+      const response = await fetch(`${appScriptUrl}?${params.toString()}`);
+      const result = await response.json();
+
+      if (result.status !== "SUCCESS") {
+        //alert(result.message || "⚠️ Erro ao validar plantonista.");
+        nmFunc.style.borderColor = "#E74C3C";
+        nmFunc.style.color = "#E74C3C";
+        statusArea.textContent = "⚠️ Erro ao validar plantonista.";
+        statusArea.style.display = "block";
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+        return false;
+      }
+
+      if (!result.data.autorizado) {
+        //alert("⚠️ Plantonista ou número funcional não autorizado.");
+        nmFunc.style.borderColor = "#E74C3C";
+        nmFunc.style.color = "#E74C3C";
+        statusArea.textContent = "⚠️ Plantonista ou número funcional não autorizado.";
+        statusArea.style.display = "block";
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+        return false;
+      }
+
+      nmFunc.style.borderColor = "";
+      nmFunc.style.color = "";
+      return true;
+
+    } catch (error) {
+      console.error("Erro na validação:", error);
+      //alert("⚠️ Falha de comunicação com o servidor.");
+      nmFunc.style.borderColor = "#E74C3C";
+      nmFunc.style.color = "#E74C3C";
+      statusArea.textContent = "⚠️ Falha de comunicação com o servidor.";
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+      return false;
+    }
+  }
+  numeroFuncional.addEventListener('change', validarPlantonistaFrontend);
+  plantonistaSelect.addEventListener('change', validarPlantonistaFrontend);
+
+  /// *** VALIDAÇÃO DE SENHA DO COMUNICANTE *** ///
+  const acesso = document.getElementById('senha');
+  async function validarSenhaFrontend() {
+    const senha = document.getElementById("senha").value;
+
+    if (!senha) {
+      statusArea.textContent = "Informe a sua senha.";
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+      return false;
+    }
+
+    const params = new URLSearchParams({
+      action: "validarSenha",
+      senha
+    });
+
+    try {
+      const response = await fetch(`${appScriptUrl}?${params.toString()}`);
+      const result = await response.json();
+
+      if (result.status !== "SUCCESS") {
+        acesso.style.borderColor = "#E74C3C";
+        acesso.style.color = "#E74C3C";
+        statusArea.textContent = "⚠️ Erro ao validar senha.";
+        statusArea.style.display = "block";
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+        return false;
+      }
+
+      if (!result.data.autorizado) {
+        acesso.style.borderColor = "#E74C3C";
+        acesso.style.color = "#E74C3C";
+        statusArea.textContent = "⚠️ Senha não autorizada.";
+        statusArea.style.display = "block";
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+        return false;
+      }
+
+      acesso.style.borderColor = "";
+      acesso.style.color = "";
+      return true;
+
+    } catch (error) {
+      console.error("Erro na validação:", error);
+      acesso.style.borderColor = "#E74C3C";
+      acesso.style.color = "#E74C3C";
+      statusArea.textContent = "⚠️ Falha de comunicação com o servidor.";
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+      return false;
+    }
+  }
+  senha.addEventListener('change', validarSenhaFrontend);
+
+
+  //////////////////////////////////// ***** PROMOVE O CARREGAMENTO DOS DADOS INICIAIS PARA PREENCHIMENTO DO FORMULÁRIO ***** ////////////////////////////////////
+
   // Executa o carregamento dos dados quando o documento estiver pronto
-  document.addEventListener("DOMContentLoaded", fetchLookupData);
+  document.addEventListener("DOMContentLoaded", init);
+
+  function init() {
+    fetchLookupData();          // já existente
+    configurarFiltroOcorrencias(); // 🔵 NOVO
+  }
 
 </script>
 
