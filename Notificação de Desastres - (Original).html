@@ -1,4 +1,4 @@
-<!-- FORMULÁRIO DE NOTIFICAÇÃO DE DESASTRES - (ORIGINAL) -->
+<!-- FORMULÁRIO DE NOTIFICAÇÃO DE DESASTRES - (PRELIMINAR) -->
 <!-- https://defesacivil-es.github.io/Notificação de Desastres - (Original)/ -->
 
 <!doctype html>
@@ -10,7 +10,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Notificação de Desastres - (cadastro)</title>
+  <title>Notificação de Desastres - (cadastro preliminar)</title>
 
   <style>
     :root {
@@ -433,6 +433,26 @@
       cursor: not-allowed;
     }
 
+    .message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  
+      background: #ffffff;
+      color: #E74C3C;
+      padding: 16px 24px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  
+      z-index: 9999;
+      max-width: 400px;
+      text-align: center;
+
+      display: none; /* começa escondido */
+    }
+
+
   </style>
 
 </head>
@@ -448,48 +468,80 @@
 
     <form id="formOcorrencia">
 
+      <fieldset style= "border: none; display:flex; justify-content:center; text-align: center;" >
+          <label style= "color: #0047AB; font-size: 16px; font-weight: bold;" >::: Preencha os campos na sequência em que são apresentados com especial atenção aos campos obrigatórios (*) :::</label>
+      </fieldset>
+
+      <fieldset style= "border: none; display:flex; justify-content:center; text-align: center;" >
+        <div>
+          <label style= "color: #0047AB; font-size: 16px; font-weight: bold;" >Selecione o Tipo de Responsável pelo Registro</label>
+          <select id="responsavelSelect" name="responsavel" >
+            <option value="plantonista" selected>Plantonista CEPDEC</option>
+            <option value="comunicante">Operador da Defesa Civil Municipal</option>
+          </select>
+        </div>
+      </fieldset>
+
       <fieldset>
         <legend>1. Identificação da Ocorrência</legend>
         <div class="grid-3">
-          <label title= "Preenchimento automático - composição: ano mês dia - hora minuto - município - natureza - número sequêncial" class = "full">Número da Ocorrência <input type="text" name="numeroOcorrencia" id="numeroOcorrencia" readonly required></label>
-          <label>Tipo de Ocorrência
+          <label title= "Preenchimento automático - composição: ano mês dia - hora minuto - município - natureza - número sequêncial" class = "full">Número da Ocorrência * <input type="text" name="numeroOcorrencia" id="numeroOcorrencia" readonly required></label>
+          <label>Tipo de Ocorrência *
             <select id="tipoOcorrenciaSelect" name="tipoOcorrencia" required>
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label>Data da Ocorrência <input type="date" name="dataOcorrencia" required></label>
-          <label>Horário da Ocorrência <input type="time" name="horarioOcorrencia" required></label>
+          <label>Data da Ocorrência * <input type="date" name="dataOcorrencia" required></label>
+          <label>Horário da Ocorrência * <input type="time" name="horarioOcorrencia" required></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="fieldsetPlantonista" >
+        <legend>2. Identificação do Comunicante</legend>
+        <div class="grid-3">
+          <label class="span-2">Plantonista CEPDEC * 
+            <select id="plantonistaSelect" name="plantonista" required>
+              <option value="" disabled selected>Carregando...</option>     
+            </select>
+          </label>
+          <label>Número Funcional * <input id="numeroFuncional" name="numeroFuncional" type="text" maxlength="7" inputmode="numeric" required></label>
+          <label class="full">Fontes de Informação Utilizadas para o Registro 
+            <select id="fontesInformacaoSelect" name="fontesInformacao" multiple>
+              <option value="" disabled selected>Carregando...</option>     
+            </select>
+          </label>
         </div>
       </fieldset>
       
-      <fieldset>
+      <fieldset id="fieldsetComunicante" style="display:none">
         <legend>2. Identificação do Comunicante</legend>
         <div class="grid-3">
-          <label class="span-2">REPDEC - Responsável
-            <select id="repdecSelect" name="repdec" required>
+          <label>REPDEC - Responsável *
+            <select id="repdecSelect" name="repdec">
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label>Instituição Comunicante
-            <select id="instituicaoSelect" name="instituicaoComunicante" required>
+          <label>Instituição Comunicante *
+            <select id="instituicaoSelect" name="instituicaoComunicante">
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label>Nome do Comunicante <input type="text" name="nomeComunicante" style="text-transform: uppercase;" required></label>
-          <label>Telefone do Comunicante <input id="telefoneComunicante" name="telefoneComunicante" type="text" required maxlength="13" inputmode="numeric" placeholder="00 00000-0000"></label>
-          <label>E-mail do Comunicante <input type="email" name="emailComunicante" required></label>
+          <label>Senha * <input id= "senha" type="text" name="senha"></label>
+          <label>Nome do Comunicante * <input type="text" name="nomeComunicante" style="text-transform: uppercase;"></label>
+          <label>Telefone do Comunicante * <input id="telefoneComunicante" name="telefoneComunicante" type="text" maxlength="13" inputmode="numeric" placeholder="00 00000-0000"></label>
+          <label>E-mail do Comunicante * <input type="email" name="emailComunicante"></label>
         </div>
       </fieldset>
 
       <fieldset>
         <legend>3. Localização da Ocorrência</legend>
         <div class="grid-3">
-          <label>Município
+          <label>Município *
             <select id="municipioOcorrenciaSelect" name="municipioOcorrencia" required>
               <option value="" disabled selected>Carregando...</option>     
             </select>      
           </label>
-          <label>Bairro <input type="text" name="bairro" required></label>
+          <label>Bairro * <input type="text" name="bairro" required></label>
           <label>Rua <input type="text" name="rua"></label>
           <label>Número <input type="number" name="numero"></label>
           <label>Complemento <input type="text" name="complemento"></label>
@@ -502,20 +554,20 @@
       <fieldset>
         <legend>4. Descrição da Ocorrência</legend>
         <div class="grid-3">
-          <label>Natureza do Desastre
+          <label>Natureza do Desastre *
             <select id="naturezaDesastreSelect" name="naturezaDesastre" required>
               <option value="">Selecione...</option>     
             </select>      
           </label>
-          <label class = "span-2">COBRADE
-            <select id="cobradeSelect" name="cobrade" required disabled>
+          <label class = "span-2">COBRADE *
+            <select id="cobradeSelect" name="cobrade" disabled>
               <option value="">Selecione a Natureza primeiro</option>     
             </select>      
           </label>
           <label class = "span-2">Rio ou Córrego Próximo <input type="text" name="rioCorregro"></label>
           <label  title="Informe a cota máxima de inundação atingida nas casas (em metros)!">Cota Máxima de Inundação (mts) <input type="number" name="cotaMaxima" inputmode="decimal" step="0.01"></label>
           <label class = "full">Relato de Estrutura Colapsada <textarea name="relatoEstruturaColapsada"></textarea></label>
-          <label class = "full">Relato Detalhado da Ocorrência <textarea name="relatoDetalhadoOcorrencia" required></textarea></label>
+          <label class = "full">Relato Detalhado da Ocorrência * <textarea name="relatoDetalhadoOcorrencia" required></textarea></label>
         </div>
       </fieldset>
 
@@ -558,51 +610,51 @@
             </select>
           </label>
           <label>Total de Servidores Voluntários Atuando pelo Município <input type="number" name="servidoresVoluntarios" min="0"></label>
-          <label>Ativado SCO com a instalação de um PC Local no Município?
-            <select name="ativacaoSCO" required>
-              <option value=""></option>
+          <label>Ativado SCO com a instalação de um PC Local no Município? *
+            <select id="ativacaoSCO" name="ativacaoSCO" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o município emitiu ou emitirá decreto de situação de anormalidade!">O Município Emitiu ou Emitirá Decreto de Situação de Anormalidade?
-            <select name="emissaoDecreto" required>
-              <option value=""></option>
+          <label title="Informe se o município emitiu ou emitirá decreto de situação de anormalidade!">O Município Emitiu ou Emitirá Decreto de Situação de Anormalidade? *
+            <select id="emissaoDecreto" name="emissaoDecreto" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o município necessita de apoio para o restabelecimento de serviços essenciais!">O Município Necessita de Apoio?
-            <select name="necessitaApoio" required>
-              <option value=""></option>
+          <label title="Informe se o município necessita de apoio para o restabelecimento de serviços essenciais!">O Município Necessita de Apoio? *
+            <select id="necessitaApoio" name="necessitaApoio" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o município solicitou ou solicitará Itens de Assistência Humanitária da CEPDEC!">Solicitação de IAH à CEPDEC?
-            <select name="solicitaIAH" required>
-              <option value=""></option>
+          <label title="Informe se o município solicitou ou solicitará Itens de Assistência Humanitária da CEPDEC!">Solicitação de IAH à CEPDEC? *
+            <select id="solicitaIAH" name="solicitaIAH" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o foi Instalado Posto de Comando!">Houve Instalação de Posto Comando?
-            <select name="postoComando" required>
-              <option value=""></option>
+          <label title="Informe se o foi Instalado Posto de Comando!">Houve Instalação de Posto Comando? *
+            <select id="postoComando" name="postoComando" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o foi Instalado Abrigo!">Houve Instalação de Abrigo?
-            <select name="instalacaoAbrigo" required>
-              <option value=""></option>
+          <label title="Informe se o foi Instalado Abrigo!">Houve Instalação de Abrigo? *
+            <select id="instalacaoAbrigo" name="instalacaoAbrigo" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o foi Instalado Centro de Logística Humanitária!">Houve Instalação de Centro Logística?
-            <select name="centroLogistica" required>
-              <option value=""></option>
+          <label title="Informe se o foi Instalado Centro de Logística Humanitária!">Houve Instalação de Centro Logística? *
+            <select id="centroLogistica" name="centroLogistica" required>
+              <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
@@ -639,17 +691,20 @@
 
 <script>
 
-  const appScriptUrl = 'https://script.google.com/macros/s/AKfycbxJD52jdpWmVCcchMalcl7MEWj2EwSs22h1SUWA-y4gOsDhum9upjxB0flXMPTMzims/exec';
+  const appScriptUrl = 'https://script.google.com/macros/s/AKfycbzlWiOS_drlLAIJhLQG8I0P51PBjQIu_-WPuz5Z57izlgQFXpOMzexFlukXURvWWWH_/exec';
   let lookupData = {};
   let numeroSalvo = '';
 
   const form = document.getElementById('formOcorrencia');
   const saveBtn = document.getElementById('saveToSheetButton');
   const statusArea = document.getElementById('status');
+  const nmFunc = document.getElementById('numeroFuncional');
+  const acesso = document.getElementById('senha');
 
   // Variáveis globais para as instâncias do Choices.js
   let recursosChoices = null;
   let participacaoChoices = null;
+  let fontesInformacaoChoices = null;
 
   const telInput = document.getElementById('telefoneComunicante');
   telInput.addEventListener('input', function () {
@@ -717,6 +772,7 @@
     const natureza = this.value;
 
     cobradeSelect.disabled = true;
+    cobradeSelect.removeAttribute('required');
     cobradeSelect.innerHTML =
       '<option value="">Selecione...</option>';
 
@@ -738,6 +794,7 @@
     });
 
     cobradeSelect.disabled = false;
+    cobradeSelect.setAttribute('required', '');
   });
 
 
@@ -775,6 +832,7 @@
   async function fetchLookupData() {
     const lookupUrl = `${appScriptUrl}?action=lookup`;
     statusArea.textContent = "Carregando dados de apoio...";
+    statusArea.style.display = "block";
 
     try {
       const res = await fetch(lookupUrl);
@@ -792,6 +850,12 @@
       if (document.getElementById('repdecSelect'))
         populateSelect(document.getElementById('repdecSelect'), lookupData.repdec || []);
 
+      if (document.getElementById('plantonistaSelect'))
+        populateSelect(document.getElementById('plantonistaSelect'), lookupData.plantonista || []);
+
+      //if (document.getElementById('fontesInformacaoSelect'))
+      //  populateSelect(document.getElementById('fontesInformacaoSelect'), lookupData.fontesInformacao || []);
+
       if (document.getElementById('tipoOcorrenciaSelect'))
         populateSelect(document.getElementById('tipoOcorrenciaSelect'), lookupData.tipoOcorrencia || []);
 
@@ -806,6 +870,7 @@
 
 
       // Inicializa Choices.js para selects múltiplos e preenche-os
+
       if (document.getElementById('recursosSelect') && !recursosChoices) {
         recursosChoices = new Choices('#recursosSelect', {
           removeItemButton: true,
@@ -846,12 +911,35 @@
         populateSelectChoices(participacaoChoices, lookupData.participacaoInstitucional || []);
       }
 
+      if (document.getElementById('fontesInformacaoSelect') && !fontesInformacaoChoices) {
+        fontesInformacaoChoices = new Choices('#fontesInformacaoSelect', {
+          removeItemButton: true,
+          searchPlaceholderValue: "Buscar fonte...",
+          placeholderValue: "Selecione...",
+          noResultsText: "Nenhuma fonte de informação encontrada",
+          itemSelectText: "",
+        });
+        // ⭐ FECHAR DROPDOWN APÓS CADA SELEÇÃO
+        document.querySelector('#fontesInformacaoSelect').addEventListener('change', () => {
+          fontesInformacaoChoices.hideDropdown();
+        });
+        // ⭐ MOSTRAR DROPDOWN AO CLICAR NO CAMPO
+        const container = document.querySelector('#fontesInformacaoSelect').closest('.choices');
+        container.addEventListener('click', () => {
+          fontesInformacaoChoices.showDropdown();
+        });
+        populateSelectChoices(fontesInformacaoChoices, lookupData.fontesInformacao || []);
+      }
+
       statusArea.textContent = "✅ Dados carregados com sucesso!";
-      setTimeout(() => { statusArea.textContent = ""; }, 3000);
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 1500);
 
     } catch (e) {
       console.error("Falha ao carregar dados de lookup:", e);
       statusArea.textContent = "❌ Erro ao carregar dados de apoio.";
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
     }
 
   } // Fim de fetchLookupData()
@@ -993,8 +1081,11 @@
     }
 
     statusArea.textContent = "Enviando Dados da Ocorrência...";
+    statusArea.style.display = "block";
     saveBtn.disabled = true;
 
+    let retorno = null
+  
     try {
 
       const formData = new FormData(form);
@@ -1012,17 +1103,20 @@
 
 
       // força nome em maiúsculas
-      formData.set('nomeComunicante',
-        formData.get('nomeComunicante').toUpperCase()
-      );
+      const nomeComunicante = formData.get('nomeComunicante');
+      if (nomeComunicante) {
+        formData.set('nomeComunicante', nomeComunicante.toUpperCase());
+      }
 
       // ⭐ ALTERADO — capturar selecionados do Choices
-      const recursosSelecionados = recursosChoices.getValue(true); 
-      const participacaoSelecionados = participacaoChoices.getValue(true); 
+      const recursosSelecionados = recursosChoices ? recursosChoices.getValue(true) : [];
+      const participacaoSelecionados = participacaoChoices ? participacaoChoices.getValue(true) : [];
+      const fontesInformacaoSelecionados = fontesInformacaoChoices ? fontesInformacaoChoices.getValue(true) : [];
 
       // salvar como string separada por vírgula
       formData.set('recursosEmpenhados', recursosSelecionados.join(", "));
       formData.set('participacaoInstitucional', participacaoSelecionados.join(", "));
+      formData.set('fontesInformacao', fontesInformacaoSelecionados.join(", "));
 
       // 🔸 Envio de Dados para o Apps Script que precisa identificar a ação:
       formData.append('action', 'saveOne');
@@ -1035,15 +1129,24 @@
       const result = await response.json();
 
       if (result.status === 'SUCCESS') {
+        //statusArea.textContent = "✅ Registro salvo!";
+        //setTimeout(() => { statusArea.textContent = ""; }, 1500);
         statusArea.textContent = "✅ Registro salvo!";
-        setTimeout(() => { statusArea.textContent = ""; }, 2000);
+        statusArea.style.display = "block";
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 1500);
       } else {
-        statusArea.textContent = "⚠️ Erro: " + result.message;
-        setTimeout(() => { statusArea.textContent = ""; }, 7000);
+        //statusArea.textContent = "⚠️" + result.message;
+        //setTimeout(() => { statusArea.textContent = ""; }, 3000);
+        statusArea.textContent = "⚠️" + result.message;
+        statusArea.style.display = "block" + result.message;
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
       }
+
+      retorno = result.status;
 
     } catch (err) {
       statusArea.textContent = "❌ Falha: " + err.message;
+      statusArea.style.display = "block";
     }
 
 
@@ -1051,29 +1154,38 @@
 
       saveBtn.disabled = false;
 
-      setTimeout(() => {
-        progress.style.display = "none";
-        progress.value = 0;
-        text.textContent = "";
-      }, 2000);
+      //setTimeout(() => {
+      //  progress.style.display = "none";
+      //  progress.value = 0;
+      //  text.textContent = "";
+      //}, 2000);
 
     }
 
-    form.reset();
+    if (retorno === 'SUCCESS') {
 
-    // ⭐ ADICIONADO — limpar visual do Choices também
-    if (recursosChoices) recursosChoices.removeActiveItems();
-    if (participacaoChoices) participacaoChoices.removeActiveItems();
-    document.getElementById('listaFotos').innerHTML = "";
-    document.getElementById('fotosInput').value = ""; // Também limpa o input de arquivo
+      form.reset();
 
-    //Volta os selects normais para a opção "Selecione..."
-    const selects = form.querySelectorAll('select');
-    selects.forEach(select => {
-        if (!select.hasAttribute('multiple')) {
-           select.value = "";
-        }
-    });
+      // ⭐ ADICIONADO — limpar visual do Choices também
+      if (recursosChoices) recursosChoices.removeActiveItems();
+      if (participacaoChoices) participacaoChoices.removeActiveItems();
+      if (fontesInformacaoChoices) fontesInformacaoChoices.removeActiveItems();
+      document.getElementById('listaFotos').innerHTML = "";
+      document.getElementById('fotosInput').value = ""; // Também limpa o input de arquivo
+
+      //Volta os selects normais para a opção "Selecione..."
+      const selects = form.querySelectorAll('select');
+      selects.forEach(select => {
+          if (!select.hasAttribute('multiple')) {
+             select.value = "";
+          }
+      });
+
+      document.getElementById('responsavelSelect').value = 'plantonista';
+      document.getElementById("responsavelSelect").dispatchEvent(new Event("change"));
+    }
+
+    voltarAoTopo()
 
   });
 
@@ -1090,6 +1202,7 @@
         // Limpa visualmente os campos do Choices.js
         if (recursosChoices) recursosChoices.removeActiveItems();
         if (participacaoChoices) participacaoChoices.removeActiveItems();
+        if (fontesInformacaoChoices) fontesInformacaoChoices.removeActiveItems();
 
         // Volta os selects normais para a opção "Selecione..."
         const selects = form.querySelectorAll('select');
@@ -1099,8 +1212,200 @@
             }
         });
     }
+    document.getElementById('responsavelSelect').value = 'plantonista';
+    document.getElementById("responsavelSelect").dispatchEvent(new Event("change"));
+
+    document.getElementById("ativacaoSCO").selectedIndex = 0;
+    document.getElementById("emissaoDecreto").selectedIndex = 0;
+    document.getElementById("necessitaApoio").selectedIndex = 0;
+    document.getElementById("solicitaIAH").selectedIndex = 0;
+    document.getElementById("postoComando").selectedIndex = 0;
+    document.getElementById("instalacaoAbrigo").selectedIndex = 0;
+    document.getElementById("centroLogistica").selectedIndex = 0;
+
+    voltarAoTopo()
 
   }
+
+
+  function voltarAoTopo() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  document.getElementById("responsavelSelect").addEventListener("change", function () {
+    const plantonista = document.getElementById("fieldsetPlantonista");
+    const comunicante = document.getElementById("fieldsetComunicante");
+
+    // Esconde e limpa ambos primeiro
+    plantonista.style.display = "none";
+    comunicante.style.display = "none";
+    resetarFieldset("fieldsetPlantonista");
+    if (fontesInformacaoChoices) fontesInformacaoChoices.removeActiveItems();
+    resetarFieldset("fieldsetComunicante");
+    nmFunc.style.borderColor = "";
+    nmFunc.style.color = "";
+    acesso.style.borderColor = "";
+    acesso.style.color = "";
+
+
+    // campos do comunicante
+    const camposComunicante = comunicante.querySelectorAll('[required]');
+    const camposPlantonista = plantonista.querySelectorAll('[required]');
+
+    if (this.value === "plantonista") {
+      plantonista.style.display = "block";
+      camposComunicante.forEach(c => c.removeAttribute('required'));
+      camposPlantonista.forEach(c => c.setAttribute('required', ''));
+    }
+
+    if (this.value === "comunicante") {
+      comunicante.style.display = "block";
+      camposPlantonista.forEach(c => c.removeAttribute('required'));
+      camposComunicante.forEach(c => c.setAttribute('required', ''));
+    }
+
+  });
+
+
+  function resetarFieldset(fieldsetId) {
+    const fieldset = document.getElementById(fieldsetId);
+    if (!fieldset) return;
+
+    const campos = fieldset.querySelectorAll(
+      'input, select, textarea'
+    );
+
+    campos.forEach(campo => {
+      if (campo.tagName === 'SELECT') {
+        campo.selectedIndex = 0; // primeira opção
+      } 
+      else if (campo.type === 'checkbox' || campo.type === 'radio') {
+        campo.checked = false;
+      } 
+      else {
+        campo.value = '';
+      }
+    });
+  }
+
+  async function validarPlantonistaFrontend() {
+    const plantonista = document.getElementById("plantonistaSelect").value;
+    const numeroFuncional = document.getElementById("numeroFuncional").value;
+
+    if (!plantonista || !numeroFuncional) {
+      //alert("Informe o plantonista e o número funcional.");
+      statusArea.textContent = "Informe o plantonista e o número funcional.";
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+      return false;
+    }
+
+    const params = new URLSearchParams({
+      action: "validarPlantonista",
+      plantonista,
+      numeroFuncional
+    });
+
+    try {
+      const response = await fetch(`${appScriptUrl}?${params.toString()}`);
+      const result = await response.json();
+
+      if (result.status !== "SUCCESS") {
+        //alert(result.message || "⚠️ Erro ao validar plantonista.");
+        nmFunc.style.borderColor = "#E74C3C";
+        nmFunc.style.color = "#E74C3C";
+        statusArea.textContent = "⚠️ Erro ao validar plantonista.";
+        statusArea.style.display = "block";
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+        return false;
+      }
+
+      if (!result.data.autorizado) {
+        //alert("Plantonista ou número funcional não autorizado.");
+        nmFunc.style.borderColor = "#E74C3C";
+        nmFunc.style.color = "#E74C3C";
+        statusArea.textContent = "⚠️ Plantonista ou número funcional não autorizado.";
+        statusArea.style.display = "block";
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+        return false;
+      }
+
+      nmFunc.style.borderColor = "";
+      nmFunc.style.color = "";
+      return true;
+
+    } catch (error) {
+      console.error("Erro na validação:", error);
+      //alert("Falha de comunicação com o servidor.");
+      nmFunc.style.borderColor = "#E74C3C";
+      nmFunc.style.color = "#E74C3C";
+      statusArea.textContent = "Falha de comunicação com o servidor.";
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+      return false;
+    }
+  }
+
+  numeroFuncional.addEventListener('change', validarPlantonistaFrontend);
+  plantonistaSelect.addEventListener('change', validarPlantonistaFrontend);
+
+  async function validarSenhaFrontend() {
+    const senha = document.getElementById("senha").value;
+
+    if (!senha) {
+      statusArea.textContent = "Informe a sua senha.";
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+      return false;
+    }
+
+    const params = new URLSearchParams({
+      action: "validarSenha",
+      senha
+    });
+
+    try {
+      const response = await fetch(`${appScriptUrl}?${params.toString()}`);
+      const result = await response.json();
+
+      if (result.status !== "SUCCESS") {
+        acesso.style.borderColor = "#E74C3C";
+        acesso.style.color = "#E74C3C";
+        statusArea.textContent = "⚠️ Erro ao validar senha.";
+        statusArea.style.display = "block";
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+        return false;
+      }
+
+      if (!result.data.autorizado) {
+        acesso.style.borderColor = "#E74C3C";
+        acesso.style.color = "#E74C3C";
+        statusArea.textContent = "⚠️ Senha não autorizada.";
+        statusArea.style.display = "block";
+        setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+        return false;
+      }
+
+      acesso.style.borderColor = "";
+      acesso.style.color = "";
+      return true;
+
+    } catch (error) {
+      console.error("⚠️ Erro na validação:", error);
+      acesso.style.borderColor = "#E74C3C";
+      acesso.style.color = "#E74C3C";
+      statusArea.textContent = "⚠️ Falha de comunicação com o servidor.";
+      statusArea.style.display = "block";
+      setTimeout(() => { statusArea.style.display = "none"; statusArea.textContent = ""; }, 3000);
+      return false;
+    }
+  }
+
+  senha.addEventListener('change', validarSenhaFrontend);
 
   // Executa o carregamento dos dados quando o documento estiver pronto
   document.addEventListener("DOMContentLoaded", fetchLookupData);
