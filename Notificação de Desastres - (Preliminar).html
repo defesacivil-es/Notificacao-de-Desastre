@@ -452,6 +452,10 @@
       display: none; /* começa escondido */
     }
 
+   .asterisco {
+     color: red;
+     font-weight: bold;
+   }
 
   </style>
 
@@ -469,7 +473,7 @@
     <form id="formOcorrencia">
 
       <fieldset style= "border: none; display:flex; justify-content:center; text-align: center;" >
-          <label style= "color: #0047AB; font-size: 16px; font-weight: bold;" >::: Preencha os campos na sequência em que são apresentados com especial atenção aos campos obrigatórios (*) :::</label>
+          <label style= "color: #0047AB; font-size: 16px; font-weight: bold;" >::: Preencha os campos na sequência em que são apresentados com especial atenção aos campos obrigatórios (<span class="asterisco">*</span>) :::</label>
       </fieldset>
 
       <fieldset style= "border: none; display:flex; justify-content:center; text-align: center;" >
@@ -485,26 +489,26 @@
       <fieldset>
         <legend>1. Identificação da Ocorrência</legend>
         <div class="grid-3">
-          <label title= "Preenchimento automático - composição: ano mês dia - hora minuto - município - natureza - número sequêncial" class = "full">Número da Ocorrência * <input type="text" name="numeroOcorrencia" id="numeroOcorrencia" readonly required></label>
-          <label>Tipo de Ocorrência *
+          <label title= "Preenchimento automático - composição: ano mês dia - hora minuto - município - natureza - número sequêncial" class = "full"> <span> Número da Ocorrência <span class="asterisco">*</span> </span> <input type="text" name="numeroOcorrencia" id="numeroOcorrencia" readonly required></label>
+          <label> <span> Tipo de Ocorrência <span class="asterisco">*</span> </span> 
             <select id="tipoOcorrenciaSelect" name="tipoOcorrencia" required>
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label>Data da Ocorrência * <input type="date" name="dataOcorrencia" required></label>
-          <label>Horário da Ocorrência * <input type="time" name="horarioOcorrencia" required></label>
+          <label> <span> Data da Ocorrência <span class="asterisco">*</span> </span> <input type="date" name="dataOcorrencia" required></label>
+          <label> <span> Horário da Ocorrência <span class="asterisco">*</span> </span> <input type="time" name="horarioOcorrencia" required></label>
         </div>
       </fieldset>
 
       <fieldset id="fieldsetPlantonista" >
         <legend>2. Identificação do Comunicante</legend>
         <div class="grid-3">
-          <label class="span-2">Plantonista CEPDEC * 
+          <label class="span-2"> <span> Plantonista CEPDEC <span class="asterisco">*</span> </span> 
             <select id="plantonistaSelect" name="plantonista" required>
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label>Número Funcional * <input id="numeroFuncional" name="numeroFuncional" type="text" maxlength="7" inputmode="numeric" required></label>
+          <label> <span> Número Funcional <span class="asterisco">*</span> </span> <input id="numeroFuncional" name="numeroFuncional" type="text" maxlength="7" inputmode="numeric" required></label>
           <label class="full">Fontes de Informação Utilizadas para o Registro 
             <select id="fontesInformacaoSelect" name="fontesInformacao" multiple>
               <option value="" disabled selected>Carregando...</option>     
@@ -516,58 +520,58 @@
       <fieldset id="fieldsetComunicante" style="display:none">
         <legend>2. Identificação do Comunicante</legend>
         <div class="grid-3">
-          <label>REPDEC - Responsável *
+          <label> <span> REPDEC - Responsável <span class="asterisco">*</span> </span> 
             <select id="repdecSelect" name="repdec">
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label>Instituição Comunicante *
+          <label> <span> Instituição Comunicante <span class="asterisco">*</span> </span> 
             <select id="instituicaoSelect" name="instituicaoComunicante">
               <option value="" disabled selected>Carregando...</option>     
             </select>
           </label>
-          <label>Senha * <input id= "senha" type="text" name="senha"></label>
-          <label>Nome do Comunicante * <input type="text" name="nomeComunicante" style="text-transform: uppercase;"></label>
-          <label>Telefone do Comunicante * <input id="telefoneComunicante" name="telefoneComunicante" type="text" maxlength="13" inputmode="numeric" placeholder="00 00000-0000"></label>
-          <label>E-mail do Comunicante * <input type="email" name="emailComunicante"></label>
+          <label> <span> Senha <span class="asterisco">*</span> </span> <input id= "senha" type="text" name="senha"></label>
+          <label> <span> Nome do Comunicante <span class="asterisco">*</span> </span> <input type="text" name="nomeComunicante" style="text-transform: uppercase;"></label>
+          <label> <span> Telefone do Comunicante <span class="asterisco">*</span> </span> <input id="telefoneComunicante" name="telefoneComunicante" type="text" maxlength="13" inputmode="numeric" placeholder="00 00000-0000"></label>
+          <label> <span> E-mail do Comunicante <span class="asterisco">*</span> </span> <input type="email" name="emailComunicante"></label>
         </div>
       </fieldset>
 
       <fieldset>
         <legend>3. Localização da Ocorrência</legend>
         <div class="grid-3">
-          <label>Município *
+          <label> <span> Município <span class="asterisco">*</span> </span> 
             <select id="municipioOcorrenciaSelect" name="municipioOcorrencia" required>
               <option value="" disabled selected>Carregando...</option>     
             </select>      
           </label>
-          <label>Bairro * <input type="text" name="bairro" required></label>
+          <label> <span> Bairro <span class="asterisco">*</span> </span> <input type="text" name="bairro" required></label>
           <label>Rua <input type="text" name="rua"></label>
           <label>Número <input type="number" name="numero"></label>
           <label>Complemento <input type="text" name="complemento"></label>
           <label>Ponto de Referência <input type="text" name="pontoReferencia"></label>
-          <label title= "Digite apenas os números">Latitude - (Ex: -20,985815) <input id="latitude" type="text" name="latitude" maxlength="10" inputmode="numeric" placeholder="-00,000000"></label>
-          <label title= "Digite apenas os números">Longitude - (Ex: -40,985815) <input id="longitude" type="text" name="longitude" maxlength="10" inputmode="numeric" placeholder="-00,000000"></label>
+          <label id="labellatitude" title= "Digite apenas os números"> <span class="texto-label-lat">Latitude - (Ex: -20,985815)</span> <input id="latitude" type="text" name="latitude" maxlength="10" inputmode="numeric" placeholder="-00,000000"></label>
+          <label id="labellongitude" title= "Digite apenas os números"> <span class="texto-label-lon">Longitude - (Ex: -40,985815)</span> <input id="longitude" type="text" name="longitude" maxlength="10" inputmode="numeric" placeholder="-00,000000"></label>
         </div>
       </fieldset>
 
       <fieldset>
         <legend>4. Descrição da Ocorrência</legend>
         <div class="grid-3">
-          <label>Natureza do Desastre *
+          <label> <span> Natureza do Desastre <span class="asterisco">*</span> </span> 
             <select id="naturezaDesastreSelect" name="naturezaDesastre" required>
               <option value="">Selecione...</option>     
             </select>      
           </label>
-          <label class = "span-2">COBRADE *
-            <select id="cobradeSelect" name="cobrade" disabled>
-              <option value="">Selecione a Natureza primeiro</option>     
+          <label class = "span-2"> <span> COBRADE <span class="asterisco">*</span> </span> 
+            <select id="cobradeSelect" name="cobrade" disabled required>
+              <option value="" disabled selected>Selecione a natureza primeiro ...</option>     
             </select>      
           </label>
-          <label class = "span-2">Rio ou Córrego Próximo <input type="text" name="rioCorregro"></label>
-          <label  title="Informe a cota máxima de inundação atingida nas casas (em metros)!">Cota Máxima de Inundação (mts) <input type="number" name="cotaMaxima" inputmode="decimal" step="0.01"></label>
-          <label class = "full">Relato de Estrutura Colapsada <textarea name="relatoEstruturaColapsada"></textarea></label>
-          <label class = "full">Relato Detalhado da Ocorrência * <textarea name="relatoDetalhadoOcorrencia" required></textarea></label>
+          <label id= "labelRio" class = "span-2" style="display:none;" >Rio ou Córrego Próximo <input type="text" id= "inputRio" name="rioCorregro"></label>
+          <label id= "labelCota" title = "Informe a cota máxima de inundação atingida nas casas (em metros)!" style="display:none;" >Cota Máxima de Inundação (mts) <input type="number" id= "inputCota"  name="cotaMaxima" inputmode="decimal" step="0.01"></label>
+          <label id= "labelAcumulado" style="display:none;" >Acumulado de chuvas (mm) <input type="text" id= "inputAcumulado" name="acumulado"></label>
+          <label class = "full"> <span> Relato Detalhado da Ocorrência <span class="asterisco">*</span> </span> <textarea name="relatoDetalhadoOcorrencia" required></textarea></label>
         </div>
       </fieldset>
 
@@ -582,6 +586,7 @@
           <label>Óbitos <input type="number" name="obitos" min="0"></label>
           <label>Outras Pessoas Afetadas <input type="number" name="outrasAfetadas" min="0"></label>
           <label>Pessoas Encaminhadas para Abrigo <input type="number" name="pessoasAbrigo" min="0"></label>
+          <label>Nome do Abrigo <input type="text" name="nomeAbrigo"></label>
         </div>
       </fieldset>
 
@@ -610,49 +615,49 @@
             </select>
           </label>
           <label>Total de Servidores Voluntários Atuando pelo Município <input type="number" name="servidoresVoluntarios" min="0"></label>
-          <label>Ativado SCO com a instalação de um PC Local no Município? *
+          <label> <span> Ativado SCO com a instalação de um PC Local no Município? <span class="asterisco">*</span> </span> 
             <select id="ativacaoSCO" name="ativacaoSCO" required>
               <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o município emitiu ou emitirá decreto de situação de anormalidade!">O Município Emitiu ou Emitirá Decreto de Situação de Anormalidade? *
+          <label title="Informe se o município emitiu ou emitirá decreto de situação de anormalidade!"> <span> O Município Emitiu ou Emitirá Decreto de Situação de Anormalidade? <span class="asterisco">*</span> </span> 
             <select id="emissaoDecreto" name="emissaoDecreto" required>
               <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o município necessita de apoio para o restabelecimento de serviços essenciais!">O Município Necessita de Apoio? *
+          <label title="Informe se o município necessita de apoio para o restabelecimento de serviços essenciais!"> <span> O Município Necessita de Apoio? <span class="asterisco">*</span> </span> 
             <select id="necessitaApoio" name="necessitaApoio" required>
               <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o município solicitou ou solicitará Itens de Assistência Humanitária da CEPDEC!">Solicitação de IAH à CEPDEC? *
+          <label title="Informe se o município solicitou ou solicitará Itens de Assistência Humanitária da CEPDEC!"> <span> Solicitação de IAH à CEPDEC? <span class="asterisco">*</span> </span> 
             <select id="solicitaIAH" name="solicitaIAH" required>
               <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o foi Instalado Posto de Comando!">Houve Instalação de Posto Comando? *
+          <label title="Informe se o foi Instalado Posto de Comando!"> <span> Houve Instalação de Posto Comando? <span class="asterisco">*</span> </span> 
             <select id="postoComando" name="postoComando" required>
               <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o foi Instalado Abrigo!">Houve Instalação de Abrigo? *
+          <label title="Informe se o foi Instalado Abrigo!"> <span> Houve Instalação de Abrigo? <span class="asterisco">*</span> </span> 
             <select id="instalacaoAbrigo" name="instalacaoAbrigo" required>
               <option selected>Não informado</option>
               <option>Sim</option>
               <option>Não</option>
             </select>
           </label>
-          <label title="Informe se o foi Instalado Centro de Logística Humanitária!">Houve Instalação de Centro Logística? *
+          <label title="Informe se o foi Instalado Centro de Logística Humanitária!"> <span> Houve Instalação de Centro Logística? <span class="asterisco">*</span> </span> 
             <select id="centroLogistica" name="centroLogistica" required>
               <option selected>Não informado</option>
               <option>Sim</option>
@@ -691,7 +696,7 @@
 
 <script>
 
-  const appScriptUrl = 'https://script.google.com/macros/s/AKfycbzlWiOS_drlLAIJhLQG8I0P51PBjQIu_-WPuz5Z57izlgQFXpOMzexFlukXURvWWWH_/exec';
+  const appScriptUrl = 'https://script.google.com/macros/s/AKfycbyPWKIt4aJpTQ6bfNMvObU6afrnMqavpfzchFD9YtE_aXSr97JTjY1vdvDrwo0zbgMv/exec';
   let lookupData = {};
   let numeroSalvo = '';
 
@@ -774,7 +779,7 @@
     cobradeSelect.disabled = true;
     cobradeSelect.removeAttribute('required');
     cobradeSelect.innerHTML =
-      '<option value="">Selecione...</option>';
+      '<option value="" disabled selected>Selecione a natureza primeiro ...</option>';
 
     if (!natureza) return;
 
@@ -1060,7 +1065,7 @@
     const municipioFormatado = gerarSiglaInteligente(municipio);
 
     //const numero = `${dataFormatada}-${horaFormatada}-${municipioFormatado}-${numeroSalvo}`;
-    const numero = `${data} - ${hora} - ${municipio} - ${natureza} - ${numeroSalvo}`;
+    const numero = `${municipio} - ${data} - ${hora} - ${natureza} - ${numeroSalvo}`;
 
     numeroOcorrenciaInput.value = numero;
   }
@@ -1154,12 +1159,6 @@
 
       saveBtn.disabled = false;
 
-      //setTimeout(() => {
-      //  progress.style.display = "none";
-      //  progress.value = 0;
-      //  text.textContent = "";
-      //}, 2000);
-
     }
 
     if (retorno === 'SUCCESS') {
@@ -1183,9 +1182,24 @@
 
       document.getElementById('responsavelSelect').value = 'plantonista';
       document.getElementById("responsavelSelect").dispatchEvent(new Event("change"));
-    }
+    
+      document.getElementById("ativacaoSCO").selectedIndex = 0;
+      document.getElementById("emissaoDecreto").selectedIndex = 0;
+      document.getElementById("necessitaApoio").selectedIndex = 0;
+      document.getElementById("solicitaIAH").selectedIndex = 0;
+      document.getElementById("postoComando").selectedIndex = 0;
+      document.getElementById("instalacaoAbrigo").selectedIndex = 0;
+      document.getElementById("centroLogistica").selectedIndex = 0;
 
-    voltarAoTopo()
+      cobradeSelect.disabled = true;
+      cobradeSelect.removeAttribute('required');
+      cobradeSelect.innerHTML = '<option value="" disabled selected>Selecione a natureza primeiro ...</option>';
+
+      voltarAoTopo()
+
+      await fetchLookupData();
+
+    }
 
   });
 
@@ -1223,6 +1237,10 @@
     document.getElementById("instalacaoAbrigo").selectedIndex = 0;
     document.getElementById("centroLogistica").selectedIndex = 0;
 
+    cobradeSelect.disabled = true;
+    cobradeSelect.removeAttribute('required');
+    cobradeSelect.innerHTML = '<option value="" disabled selected>Selecione a natureza primeiro ...</option>';
+
     voltarAoTopo()
 
   }
@@ -1236,6 +1254,47 @@
   }
 
 
+  //////////////////////////////////// ***** APRESENTA X OCULTA CAMPOS DE DESCRIÇÃO DA OCORRÊNCIA ***** ////////////////////////////////////
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const selectNatureza = document.getElementById("naturezaDesastreSelect");
+
+    if (!selectNatureza) return;
+
+    selectNatureza.addEventListener("change", function () {
+
+      const natureza = this.value;
+
+      document.getElementById("labelRio").style.display = "none";
+      document.getElementById("labelCota").style.display = "none";
+      document.getElementById("labelAcumulado").style.display = "none";
+
+      document.getElementById("inputRio").value = "";
+      document.getElementById("inputCota").value = "";
+      document.getElementById("inputAcumulado").value = "";
+
+      if (natureza === "Hidrológico") {
+
+        document.getElementById("labelRio").style.display = "block";
+        document.getElementById("labelCota").style.display = "block";
+
+      }
+
+      if (natureza === "Meteorológico") {
+
+        document.getElementById("labelAcumulado").style.display = "block";
+
+      }
+
+    });
+
+  });  
+
+
+  //////////////////////////////////// ***** ALTERNÂNCIA ENTRE CAMPOS DO FORMULÁRIO ***** ////////////////////////////////////
+
+  /// *** ALTERNA ENTRE OS CAMPOS PLANTONISTA E COMUNICANTE *** ///
   document.getElementById("responsavelSelect").addEventListener("change", function () {
     const plantonista = document.getElementById("fieldsetPlantonista");
     const comunicante = document.getElementById("fieldsetComunicante");
@@ -1260,17 +1319,26 @@
       plantonista.style.display = "block";
       camposComunicante.forEach(c => c.removeAttribute('required'));
       camposPlantonista.forEach(c => c.setAttribute('required', ''));
+      document.getElementById("latitude").required = false;
+      document.getElementById("longitude").required = false;
+      document.querySelector("#labellatitude .texto-label-lat").innerHTML = '<span> Latitude - (Ex: -20,985815) </span>';
+      document.querySelector("#labellongitude .texto-label-lon").innerHTML = '<span> Longitude - (Ex: -40,985815) </span>';
     }
 
     if (this.value === "comunicante") {
       comunicante.style.display = "block";
       camposPlantonista.forEach(c => c.removeAttribute('required'));
       camposComunicante.forEach(c => c.setAttribute('required', ''));
+      document.getElementById("latitude").required = true;
+      document.getElementById("longitude").required = true;
+      document.querySelector("#labellatitude .texto-label-lat").innerHTML = '<span> Latitude - (Ex: -20,985815) <span class="asterisco">*</span> </span>';
+      document.querySelector("#labellongitude .texto-label-lon").innerHTML = '<span> Longitude - (Ex: -40,985815) <span class="asterisco">*</span> </span>';
     }
 
   });
 
 
+  /// *** COMPLEMENTA A FUNÇÃO QUE ALTERNA OS PLANTONISTA E COMUNICANTE *** ///
   function resetarFieldset(fieldsetId) {
     const fieldset = document.getElementById(fieldsetId);
     if (!fieldset) return;
@@ -1292,6 +1360,9 @@
     });
   }
 
+  //////////////////////////////////// ***** VALIDAÇÃO DE NÚMERO FUNCIONAL E SENHA ***** ////////////////////////////////////
+
+  /// *** VALIDAÇÃO DO NUMERO FUNCIONAL DO PLANTONISTA *** ///
   async function validarPlantonistaFrontend() {
     const plantonista = document.getElementById("plantonistaSelect").value;
     const numeroFuncional = document.getElementById("numeroFuncional").value;
@@ -1353,6 +1424,7 @@
   numeroFuncional.addEventListener('change', validarPlantonistaFrontend);
   plantonistaSelect.addEventListener('change', validarPlantonistaFrontend);
 
+  /// *** VALIDAÇÃO DE SENHA DO COMUNICANTE *** ///
   async function validarSenhaFrontend() {
     const senha = document.getElementById("senha").value;
 
