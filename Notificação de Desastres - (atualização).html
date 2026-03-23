@@ -1611,12 +1611,14 @@
 
     // campos do comunicante
     const camposComunicante = comunicante.querySelectorAll('[required]');
-    const camposPlantonista = plantonista.querySelectorAll('[required]');
+    //const camposPlantonista = plantonista.querySelectorAll('[required]');
 
     if (this.value === "plantonista") {
       plantonista.style.display = "block";
-      camposComunicante.forEach(c => c.removeAttribute('required'));
-      camposPlantonista.forEach(c => c.setAttribute('required', ''));
+      comunicante.style.display = "none";
+      camposComunicante.forEach(c => c.required = false);
+      document.getElementById("plantonistaSelect").required = true;
+      document.getElementById("numeroFuncional").required = true;
       document.getElementById("latitude").required = false;
       document.getElementById("longitude").required = false;
       document.querySelector("#labellatitude .texto-label-lat").innerHTML = '<span> Latitude - (Ex: -20,985815) </span>';
@@ -1625,8 +1627,10 @@
 
     if (this.value === "comunicante") {
       comunicante.style.display = "block";
-      camposPlantonista.forEach(c => c.removeAttribute('required'));
-      camposComunicante.forEach(c => c.setAttribute('required', ''));
+      plantonista.style.display = "none";
+      document.getElementById("plantonistaSelect").required = false;
+      document.getElementById("numeroFuncional").required = false;
+      camposComunicante.forEach(c => c.required = true)
       document.getElementById("latitude").required = true;
       document.getElementById("longitude").required = true;
       document.querySelector("#labellatitude .texto-label-lat").innerHTML = '<span> Latitude - (Ex: -20,985815) <span class="asterisco">*</span> </span>';
