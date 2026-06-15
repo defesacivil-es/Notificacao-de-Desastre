@@ -426,10 +426,18 @@
     <form id="formOcorrencia">
 
       <fieldset>
-        <legend>Escolha o Tipo de Registro</legend>
+        <legend>Ocorrências</legend>
         <div class="grid-2">
           <button type="button" id="botaoCadastrar" onclick="cadastraOcorrencia()" >Cadastrar Ocorrência</button>
           <button type="button" id="botaoAtualizar" onclick="atualizaOcorrencia()" >Atualizar Ocorrência</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Desastres</legend>
+        <div class="grid-2">
+          <button type="button" id="botaoCadastrar" onclick="cadastraDesastre()" >Cadastrar Desastre</button>
+          <button type="button" id="botaoAtualizar" onclick="atualizaDesastre()" >Atualizar Desastre</button>
         </div>
       </fieldset>
       
@@ -440,13 +448,21 @@
   <script>
 
     function cadastraOcorrencia() {
-      window.location.href = 'https://script.google.com/macros/s/AKfycbzT2cJw9J8z1DYgcCwqbK-g58VBynlmqOMg_xQLLVLGM-urDLsr2zZ1JeWaPJKFoqdb/exec';
+      window.location.href = 'https://script.google.com/macros/s/AKfycbxbIICimfAwQHz7eXKViL6UBrwCjVBmGoMFtvGMdLNXslyvO7Vvnx7Hve-3mSGRG6gD/exec';
     }
 
     function atualizaOcorrencia() {
-      window.location.href = 'https://script.google.com/macros/s/AKfycbxSjMRfyk_2flOrPAS1f0SzV67qxwQW9FaVmaeHImGlOPnoLajxLj--VcSoeHfeHAADRw/exec';
+      window.location.href = 'https://script.google.com/macros/s/AKfycbwxhFVeE_KQgLvqOmyE40yNTorN8ztOuFItWFvm7sklJQAcgDNuWLc4YY85pTuiIot5HA/exec';
     }
 
+    function cadastraDesastre() {
+      window.location.href = 'https://script.google.com/macros/s/AKfycbzT2cJw9J8z1DYgcCwqbK-g58VBynlmqOMg_xQLLVLGM-urDLsr2zZ1JeWaPJKFoqdb/exec';
+    }
+
+    function atualizaDesastre() {
+      window.location.href = 'https://script.google.com/macros/s/AKfycbxSjMRfyk_2flOrPAS1f0SzV67qxwQW9FaVmaeHImGlOPnoLajxLj--VcSoeHfeHAADRw/exec';
+    }
+    
   </script>
 
 </body>
