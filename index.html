@@ -410,6 +410,15 @@
       cursor: not-allowed;
     }
 
+    .fieldset-container {
+      display: flex;
+      gap: 20px; /* espaço entre os fieldsets */
+    }
+
+    .fieldset-container fieldset {
+      flex: 1; /* divide o espaço igualmente */
+    }
+    
   </style>
 
 </head>
@@ -425,21 +434,25 @@
 
     <form id="formOcorrencia">
 
-      <fieldset>
-        <legend>Ocorrências</legend>
-        <div class="grid-2">
-          <button type="button" id="botaoCadastrar" onclick="cadastraOcorrencia()" >Cadastrar Ocorrência</button>
-          <button type="button" id="botaoAtualizar" onclick="atualizaOcorrencia()" >Atualizar Ocorrência</button>
-        </div>
-      </fieldset>
+      <div class="fieldset-container">
+      
+        <fieldset>
+          <legend>Ocorrências</legend>
+          <div class="grid-2">
+            <button type="button" id="botaoCadastrarOcorrencia" onclick="cadastraOcorrencia()" >Cadastrar Ocorrência</button>
+            <button type="button" id="botaoAtualizarOcorrencia" onclick="atualizaOcorrencia()" >Atualizar Ocorrência</button>
+          </div>
+        </fieldset>
 
-      <fieldset>
-        <legend>Desastres</legend>
-        <div class="grid-2">
-          <button type="button" id="botaoCadastrar" onclick="cadastraDesastre()" >Cadastrar Desastre</button>
-          <button type="button" id="botaoAtualizar" onclick="atualizaDesastre()" >Atualizar Desastre</button>
-        </div>
-      </fieldset>
+        <fieldset>
+          <legend>Desastres</legend>
+          <div class="grid-2">
+            <button type="button" id="botaoCadastrarDesastre" onclick="cadastraDesastre()" >Cadastrar Desastre</button>
+            <button type="button" id="botaoAtualizarDesastre" onclick="atualizaDesastre()" >Atualizar Desastre</button>
+          </div>
+        </fieldset>
+
+      </div> 
       
     </form>
 
